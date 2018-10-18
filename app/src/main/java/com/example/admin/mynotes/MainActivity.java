@@ -37,7 +37,9 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_create_note) {
+//            intent = new Intent(this, CreateNote.class);
+//            startActivity(intent);
             return true;
         }
 
@@ -45,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createNote(View view) {
-        intent = new Intent(this, CreateNote.class);
-        startActivity(intent);
+//        intent = new Intent(this, CreateNote.class);
+//        startActivity(intent);
     }
 }
