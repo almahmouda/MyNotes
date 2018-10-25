@@ -1,7 +1,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.example.ali.MyNotes2.CreateNote">
-
-
-   </menu>
+    tools:context="com.example.admin.mynotes.CreateNote">
+    <item
+        android:id="@+id/add_note"
+        android:icon="@android:drawable/ic_menu_add"
+        android:title="@string/create_a_note"
+        app:showAsAction="always"
+        android:onClick="createNote"
+        />
+    <item
+        android:id="@+id/action_home"
+        android:orderInCategory="1"
+        android:title="@string/action_home"
+        app:showAsAction="never" />
+</menu>
