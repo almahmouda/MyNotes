@@ -15,8 +15,8 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String COLUMN_LIST_ID ="_id";
     private static final String COLUMN_NOTE_TITLE = "title";
     private static final String COLUMN_NOTE_DATE_CREATE = "date_created";
-    private static final String COLUMN_NOTE_DATE_END = "date_end ";
-    private static final String COLUMN_NOTE_DESCRIPTION = "description ";
+    private static final String COLUMN_NOTE_DATE_END = "date_end";
+    private static final String COLUMN_NOTE_DESCRIPTION = "description";
 
     public DBHandler (Context context, SQLiteDatabase.CursorFactory factory){
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -64,5 +64,33 @@ public class DBHandler extends SQLiteOpenHelper {
         return db.rawQuery("SELECT * FROM "+ TABLE_MY_NOTE,null);
     }
 
+    String getNoteAttribute(int id, String attribute) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        // String the method will return
+        String dbString;
+
+        // select statement for the specific id
+        String query = "SELECT * FROM " + TABLE_MY_NOTE + " WHERE " + COLUMN_LIST_ID + " = " + id;
+
+        // execute statement
+        Cursor cursor = db.rawQuery(query, null);
+
+        cursor.moveToFirst();
+
+        // if note in the Cursor isn't null
+        if (!cursor.getString(cursor.getColumnIndex(attribute)).isEmpty()) {
+            // get the note name and store it in the dbString
+            dbString = cursor.getString(cursor.getColumnIndex(attribute));
+        } else {
+            dbString = "None";
+        }
+
+        cursor.close();
+
+        db.close();
+
+        return dbString;
+    }
 
 }

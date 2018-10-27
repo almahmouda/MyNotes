@@ -9,4 +9,11 @@
     <string name="create_a_note">Create a Note</string>
     <string name="action_home">Home</string>
     <string name="action_create_note">Create Note</string>
+    <string name="title_activity_view_note">View Note</string>
+    <string name="label_created">Created:</string>
+    <string name="label_ending">End Date:</string>
+    <string name="label_description">Description</string>
+    <string name="hint_enter_title">Enter a title</string>
+    <string name="hint_create_date">Tap to insert a date</string>
+    <string name="hint_note">Type note here</string>
 </resources>
