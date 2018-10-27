@@ -205,7 +205,7 @@ public class CreateNote extends AppCompatActivity {
 
         if(title.trim().equals("") || dateCreate.trim().equals("") || description.trim().equals("") ){
             // required date hasn't been input, so display Toast
-            Toast.makeText(this, "Please enter a title ,date created and a description ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Please enter a title, date created, and a description ", Toast.LENGTH_SHORT).show();
 
         }else if (!dateEnd.trim().equals("") && dateCreate.compareTo(dateEnd)==1){
             Toast.makeText(this, "End date cannot be before create date! ", Toast.LENGTH_SHORT).show();

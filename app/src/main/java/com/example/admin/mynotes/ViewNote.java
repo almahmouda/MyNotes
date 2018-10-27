@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class ViewNote extends AppCompatActivity {
 
@@ -32,7 +33,9 @@ public class ViewNote extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         bundle = this.getIntent().getExtras();
 
@@ -58,11 +61,27 @@ public class ViewNote extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_view_note, menu);
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()){
+            case R.id.action_edit_note:
+                Toast.makeText(this, "Edit Test OK.", Toast.LENGTH_LONG).show();
+                return true;
+            case R.id.action_delete_note:
+                Toast.makeText(this, "Delete Test OK.", Toast.LENGTH_LONG).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    public void editNote(View view) {
+        Toast.makeText(this, "Edit Test OK.", Toast.LENGTH_LONG).show();
+
     }
 }
