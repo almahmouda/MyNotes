@@ -31,6 +31,7 @@ public class CreateNote extends AppCompatActivity {
 
     // declare Calendar - used to map the data selected in the DatePickerDialog
     Calendar calendar;
+    DBHandler dbHandler;
 
 
     @Override
@@ -39,6 +40,10 @@ public class CreateNote extends AppCompatActivity {
         setContentView(R.layout.activity_create_note);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        // up button
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         // initialize EditTexts
         titleEditText = (EditText) findViewById(R.id.titleEditText);
         dateCreatedEditText = (EditText) findViewById(R.id.dateCreatedEditText);
@@ -47,6 +52,8 @@ public class CreateNote extends AppCompatActivity {
 
         // initialize Calender
         calendar = Calendar.getInstance();
+
+        dbHandler = new DBHandler(this, null);
 
 
         // create and initialize a DatePickerDialog and register and OnDateListener to it
@@ -205,7 +212,7 @@ public class CreateNote extends AppCompatActivity {
         }
         else{
             // required data has been input, update the database and display a different Toast
-           // **dbHandler.addShoppingList(title,dateCreate,dateEnd,description);
+            dbHandler.addMyNote(title,dateCreate,dateEnd,description);
             Toast.makeText(this, "Note added", Toast.LENGTH_SHORT).show();
         }
 

@@ -11,11 +11,11 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "myNote.db";
 
-    private static final String TABLE_MY_NOTE = "my notes";
+    private static final String TABLE_MY_NOTE = "my_notes";
     private static final String COLUMN_LIST_ID ="_id";
     private static final String COLUMN_NOTE_TITLE = "title";
-    private static final String COLUMN_NOTE_DATE_CREATE = "date created";
-    private static final String COLUMN_NOTE_DATE_END = "date end ";
+    private static final String COLUMN_NOTE_DATE_CREATE = "date_created";
+    private static final String COLUMN_NOTE_DATE_END = "date_end ";
     private static final String COLUMN_NOTE_DESCRIPTION = "description ";
 
     public DBHandler (Context context, SQLiteDatabase.CursorFactory factory){

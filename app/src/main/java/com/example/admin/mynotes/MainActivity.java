@@ -9,10 +9,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
     Intent intent;
+
+    DBHandler dbHandler;
+
+    NoteList noteListAdapter;
+
+    ListView noteListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +28,27 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        dbHandler = new DBHandler(this, null);
+//
+        noteListView = findViewById(R.id.note_list_view);
+//
+        noteListAdapter = new NoteList(this, dbHandler.getMyNote(), 0);
+
+        noteListView.setAdapter(noteListAdapter);
+
+        // OnItemClickListener for the noteListView
+//        noteListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                // initial the intent for the ViewNote activity
+//                intent = new Intent(MainActivity.this, ViewNote.class);
+//
+//                // put the note id of teh clicked in the intent
+//                intent.putExtra("_id", id);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     @Override
