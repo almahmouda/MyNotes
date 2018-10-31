@@ -33,7 +33,7 @@
 
             <EditText
                 android:id="@+id/titleEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_enter_title"
@@ -53,7 +53,7 @@
 
             <EditText
                 android:id="@+id/dateCreatedEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_create_date"
@@ -73,7 +73,7 @@
 
             <EditText
                 android:id="@+id/dateEndEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_create_date"
@@ -93,7 +93,7 @@
 
             <EditText
                 android:id="@+id/descriptionEditText"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="@string/hint_note"
