@@ -214,10 +214,8 @@ public class CreateNote extends AppCompatActivity {
             // required data has been input, update the database and display a different Toast
             dbHandler.addMyNote(title,dateCreate,dateEnd,description);
             Toast.makeText(this, "Note added", Toast.LENGTH_SHORT).show();
-
+            finish();
         }
-
-
     }
 
     /**

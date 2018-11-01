@@ -25,6 +25,7 @@ public class ViewNote extends AppCompatActivity {
     TextView view_create_date;
     TextView view_end_date;
     TextView viewNote;
+    String noteTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,7 @@ public class ViewNote extends AppCompatActivity {
 
         dbHandler = new DBHandler(this, null);
 
-        String noteTitle = dbHandler.getNoteAttribute((int) id, "title");
+        noteTitle = dbHandler.getNoteAttribute((int) id, "title");
 
         this.setTitle(noteTitle);
 
@@ -72,8 +73,9 @@ public class ViewNote extends AppCompatActivity {
                 Toast.makeText(this, "Edit Test OK.", Toast.LENGTH_LONG).show();
                 return true;
             case R.id.action_delete_note:
-                Toast.makeText(this, "Delete Test OK.", Toast.LENGTH_LONG).show();
-                return true;
+                Toast.makeText(this, noteTitle + " Deleted.", Toast.LENGTH_LONG).show();
+                dbHandler.deleteNote((int) id);
+                finish();
             default:
                 return super.onOptionsItemSelected(item);
         }

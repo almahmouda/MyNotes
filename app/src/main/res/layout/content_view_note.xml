@@ -41,7 +41,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_ending" />
+                app:layout_constraintTop_toBottomOf="@+id/label_ending"
+                tools:ignore="RtlHardcoded,RtlSymmetry" />
 
             <TextView
                 android:id="@+id/view_end_date"
@@ -49,10 +50,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:text="TextView"
+                android:text="@string/endDateHere"
                 android:textSize="18sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/label_ending"
-                app:layout_constraintStart_toEndOf="@+id/label_ending" />
+                app:layout_constraintStart_toEndOf="@+id/label_created" />
 
             <TextView
                 android:id="@+id/view_create_date"
@@ -60,10 +61,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:text="TextView"
+                android:text="@string/createDateHere"
                 android:textSize="18sp"
                 app:layout_constraintBaseline_toBaselineOf="@+id/label_created"
-                app:layout_constraintStart_toEndOf="@+id/label_ending" />
+                app:layout_constraintStart_toEndOf="@+id/label_created" />
 
             <TextView
                 android:id="@+id/label_ending"
@@ -103,14 +104,15 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginBottom="8dp"
-                android:contentDescription="Area for desplaying note information"
                 android:paddingLeft="4dp"
                 android:paddingRight="4dp"
+                android:text="Area for displaying note information"
                 android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/label_desc" />
+                app:layout_constraintTop_toBottomOf="@+id/label_desc"
+                tools:ignore="HardcodedText" />
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 

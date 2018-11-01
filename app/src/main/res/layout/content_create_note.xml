@@ -8,102 +8,96 @@
     tools:context=".CreateNote"
     tools:showIn="@layout/activity_create_note">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TableLayout
+        android:layout_width="367dp"
+        android:layout_height="495dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TableLayout
+        <TableRow
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_height="match_parent">
 
-            <TableRow
+            <TextView
+                android:id="@+id/titletextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/title" />
+
+            <EditText
+                android:id="@+id/titleEditText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_enter_title"
+                android:inputType="text|textCapWords" />
+        </TableRow>
 
-                <TextView
-                    android:id="@+id/titletextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/title" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/titleEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/hint_enter_title"
-                    android:inputType="text|textCapWords" />
-            </TableRow>
+            <TextView
+                android:id="@+id/dateCreatedtextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/date_created" />
 
-            <TableRow
+            <EditText
+                android:id="@+id/dateCreatedEditText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_create_date"
+                android:inputType="date" />
+        </TableRow>
 
-                <TextView
-                    android:id="@+id/dateCreatedtextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/date_created" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/dateCreatedEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/hint_create_date"
-                    android:inputType="date" />
-            </TableRow>
+            <TextView
+                android:id="@+id/dateEndtextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/end_date" />
 
-            <TableRow
+            <EditText
+                android:id="@+id/dateEndEditText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_create_date"
+                android:inputType="date" />
+        </TableRow>
 
-                <TextView
-                    android:id="@+id/dateEndtextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/end_date" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-                <EditText
-                    android:id="@+id/dateEndEditText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/hint_create_date"
-                    android:inputType="date" />
-            </TableRow>
+            <TextView
+                android:id="@+id/descriptiontextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:text="@string/discription" />
 
-            <TableRow
+            <EditText
+                android:id="@+id/descriptionEditText"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/descriptiontextView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="description" />
-
-                <EditText
-                    android:id="@+id/descriptionEditText"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/hint_note"
-                    android:inputType="textCapSentences|textAutoCorrect|textMultiLine" />
-            </TableRow>
-        </TableLayout>
-    </ScrollView>
-
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/hint_note"
+                android:inputType="textCapSentences|textAutoCorrect|textMultiLine" />
+        </TableRow>
+    </TableLayout>
 </android.support.constraint.ConstraintLayout>
