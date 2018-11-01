@@ -4,11 +4,10 @@
     tools:context="com.example.admin.mynotes.CreateNote">
     <item
         android:id="@+id/add_note"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="@string/create_a_note"
-        app:showAsAction="always"
+        android:icon="@drawable/ic_add"
         android:onClick="createNote"
-        />
+        android:title="@string/create_a_note"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_home"
         android:orderInCategory="1"

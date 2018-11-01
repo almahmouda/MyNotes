@@ -20,4 +20,6 @@
     <string name="action_delete_note">Delete</string>
     <string name="label_initial">A</string>
     <string name="labelTitle">Title goes here</string>
+    <string name="endDateHere">End date goes here</string>
+    <string name="createDateHere">Create date goes here</string>
 </resources>
