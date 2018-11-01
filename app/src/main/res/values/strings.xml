@@ -5,12 +5,12 @@
     <string name="title">Title</string>
     <string name="date_created">Date Created</string>
     <string name="end_date">End Date</string>
-    <string name="discription">Discription</string>
+    <string name="discription">Description</string>
     <string name="create_a_note">Create a Note</string>
     <string name="action_home">Home</string>
     <string name="action_create_note">Create Note</string>
     <string name="title_activity_view_note">View Note</string>
-    <string name="label_created">Created:</string>
+    <string name="label_created">Create Date:</string>
     <string name="label_ending">End Date:</string>
     <string name="label_description">Description:</string>
     <string name="hint_enter_title">Enter a title</string>

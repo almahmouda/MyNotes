@@ -36,9 +36,7 @@ public class NoteList extends CursorAdapter {
         ((ImageView) view.findViewById(R.id.letter_plate)).setColorFilter(plateColor());
     }
 
-    int now = Color.rgb(200, 200, 200);
-
-    int plateColor(){
+    private int plateColor(){
         int red=(int) (Math.random() * 200);
         int green=(int) (Math.random() * 200);
         int blue=(int) (Math.random() * 200);

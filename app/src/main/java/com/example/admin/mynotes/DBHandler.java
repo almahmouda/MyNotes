@@ -18,7 +18,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String COLUMN_NOTE_DATE_END = "date_end";
     private static final String COLUMN_NOTE_DESCRIPTION = "description";
 
-    public DBHandler (Context context, SQLiteDatabase.CursorFactory factory){
+    DBHandler (Context context, SQLiteDatabase.CursorFactory factory){
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
@@ -44,7 +44,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         onCreate(sqLiteDatabase);
     }
-    public void addMyNote (String title, String dateCreated, String dateEnd, String description){
+    void addMyNote (String title, String dateCreated, String dateEnd, String description){
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -58,7 +58,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_MY_NOTE,null,values);
         db.close();
     }
-    public Cursor getMyNote(){
+    Cursor getMyNote(){
         SQLiteDatabase db = getWritableDatabase();
 
         return db.rawQuery("SELECT * FROM "+ TABLE_MY_NOTE,null);
@@ -91,6 +91,14 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
 
         return dbString;
+    }
+
+    void deleteNote(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.delete(TABLE_MY_NOTE, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+
+        db.close();
     }
 
 }
