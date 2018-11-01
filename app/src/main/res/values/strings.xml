@@ -18,4 +18,6 @@
     <string name="hint_note">Type note here</string>
     <string name="action_edit_note">Edit</string>
     <string name="action_delete_note">Delete</string>
+    <string name="label_initial">A</string>
+    <string name="labelTitle">Title goes here</string>
 </resources>

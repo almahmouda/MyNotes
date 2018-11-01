@@ -2,17 +2,19 @@ package com.example.admin.mynotes;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CursorAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class NoteList extends CursorAdapter {
     /**
-     * initialize Notelist CursorAdapter
+     * initialize NoteList CursorAdapter
      */
-    public NoteList(Context context, Cursor cursor, int flags){
+    NoteList(Context context, Cursor cursor, int flags){
         super(context, cursor, flags);
     }
 
@@ -30,5 +32,17 @@ public class NoteList extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         ((TextView) view.findViewById(R.id.label_title)).setText(cursor.getString(cursor.getColumnIndex("title")));
+        ((TextView) view.findViewById(R.id.label_initial)).setText(cursor.getString(cursor.getColumnIndex("title")).substring(0,1));
+        ((ImageView) view.findViewById(R.id.letter_plate)).setColorFilter(plateColor());
+    }
+
+    int now = Color.rgb(200, 200, 200);
+
+    int plateColor(){
+        int red=(int) (Math.random() * 200);
+        int green=(int) (Math.random() * 200);
+        int blue=(int) (Math.random() * 200);
+
+        return Color.rgb(red,green,blue);
     }
 }
