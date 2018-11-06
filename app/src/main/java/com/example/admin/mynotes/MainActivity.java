@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null);
 //
         noteListView = findViewById(R.id.note_list_view);
-//
+
         noteListAdapter = new NoteList(this, dbHandler.getMyNote(), 0);
 
         noteListView.setAdapter(noteListAdapter);

@@ -3,8 +3,6 @@ package com.example.admin.mynotes;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -38,17 +36,19 @@ public class CreateNote extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_note);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         // up button
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         // initialize EditTexts
-        titleEditText = (EditText) findViewById(R.id.titleEditText);
-        dateCreatedEditText = (EditText) findViewById(R.id.dateCreatedEditText);
-        dateEndEditText = (EditText) findViewById(R.id.dateEndEditText);
-        descriptionEditText = (EditText) findViewById(R.id.descriptionEditText);
+        titleEditText = findViewById(R.id.titleEditText);
+        dateCreatedEditText = findViewById(R.id.dateCreatedEditText);
+        dateEndEditText = findViewById(R.id.dateEndEditText);
+        descriptionEditText = findViewById(R.id.descriptionEditText);
 
         // initialize Calender
         calendar = Calendar.getInstance();

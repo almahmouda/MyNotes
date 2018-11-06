@@ -8,96 +8,120 @@
     tools:context=".CreateNote"
     tools:showIn="@layout/activity_create_note">
 
-    <TableLayout
-        android:layout_width="367dp"
-        android:layout_height="495dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TableRow
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <TextView
-                android:id="@+id/titletextView"
+            <TableRow
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="@string/title" />
+                android:layout_height="match_parent">
 
-            <EditText
-                android:id="@+id/titleEditText"
+                <TextView
+                    android:id="@+id/titletextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/title"
+                    tools:ignore="RtlHardcoded" />
+
+                <EditText
+                    android:id="@+id/titleEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/hint_enter_title"
+                    android:inputType="text|textCapWords"
+                    tools:ignore="Autofill,RtlHardcoded" />
+            </TableRow>
+
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/hint_enter_title"
-                android:inputType="text|textCapWords" />
-        </TableRow>
+                android:layout_height="match_parent">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/dateCreatedtextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/date_created"
+                    tools:ignore="RtlHardcoded" />
 
-            <TextView
-                android:id="@+id/dateCreatedtextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="@string/date_created" />
+                <EditText
+                    android:id="@+id/dateCreatedEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/hint_create_date"
+                    android:inputType="date"
+                    tools:ignore="Autofill,RtlHardcoded" />
+            </TableRow>
 
-            <EditText
-                android:id="@+id/dateCreatedEditText"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/hint_create_date"
-                android:inputType="date" />
-        </TableRow>
+                android:layout_height="match_parent">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/dateEndtextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/end_date"
+                    tools:ignore="RtlHardcoded" />
 
-            <TextView
-                android:id="@+id/dateEndtextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="@string/end_date" />
+                <EditText
+                    android:id="@+id/dateEndEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/hint_create_date"
+                    android:inputType="date"
+                    tools:ignore="Autofill,RtlHardcoded" />
+            </TableRow>
 
-            <EditText
-                android:id="@+id/dateEndEditText"
+            <TableRow
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/hint_create_date"
-                android:inputType="date" />
-        </TableRow>
+                android:layout_height="match_parent">
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/descriptiontextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/discription"
+                    tools:ignore="RtlHardcoded" />
 
-            <TextView
-                android:id="@+id/descriptiontextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:text="@string/discription" />
+                <EditText
+                    android:id="@+id/descriptionEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="8dp"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:hint="@string/hint_note"
+                    android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+                    tools:ignore="Autofill,RtlHardcoded" />
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
 
-            <EditText
-                android:id="@+id/descriptionEditText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:hint="@string/hint_note"
-                android:inputType="textCapSentences|textAutoCorrect|textMultiLine" />
-        </TableRow>
-    </TableLayout>
 </android.support.constraint.ConstraintLayout>
