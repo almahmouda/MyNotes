@@ -2,6 +2,7 @@ package com.example.admin.mynotes;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -207,15 +208,24 @@ public class CreateNote extends AppCompatActivity {
             // required date hasn't been input, so display Toast
             Toast.makeText(this, "Please enter a title, date created, and a description ", Toast.LENGTH_SHORT).show();
 
-        }else if (!dateEnd.trim().equals("") && dateCreate.compareTo(dateEnd)==1){
+        } else if (!dateEnd.trim().equals("") && dateCreate.compareTo(dateEnd) > 0) {
             Toast.makeText(this, "End date cannot be before create date! ", Toast.LENGTH_SHORT).show();
         }
         else{
             // required data has been input, update the database and display a different Toast
-            dbHandler.addMyNote(title,dateCreate,dateEnd,description);
+            int color = plateColor();
+            dbHandler.addMyNote(title, dateCreate, dateEnd, description, color);
             Toast.makeText(this, "Note added", Toast.LENGTH_SHORT).show();
             finish();
         }
+    }
+
+    private int plateColor() {
+        int red = (int) (Math.random() * 200);
+        int green = (int) (Math.random() * 200);
+        int blue = (int) (Math.random() * 200);
+
+        return Color.rgb(red, green, blue);
     }
 
     /**

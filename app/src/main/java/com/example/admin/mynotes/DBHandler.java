@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "myNote.db";
 
     private static final String TABLE_MY_NOTE = "my_notes";
@@ -17,6 +17,8 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String COLUMN_NOTE_DATE_CREATE = "date_created";
     private static final String COLUMN_NOTE_DATE_END = "date_end";
     private static final String COLUMN_NOTE_DESCRIPTION = "description";
+    private static final String COLUMN_NOTE_COLOR = "color";
+
 
     DBHandler (Context context, SQLiteDatabase.CursorFactory factory){
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -30,7 +32,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_NOTE_TITLE + " TEXT, " +
                 COLUMN_NOTE_DATE_CREATE + " TEXT, " +
                 COLUMN_NOTE_DATE_END + " TEST, " +
-                COLUMN_NOTE_DESCRIPTION + " TEST" +
+                COLUMN_NOTE_DESCRIPTION + " TEST, " +
+                COLUMN_NOTE_COLOR + " INTEGER" +
                 ");";
 
 
@@ -44,7 +47,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
         onCreate(sqLiteDatabase);
     }
-    void addMyNote (String title, String dateCreated, String dateEnd, String description){
+
+    void addMyNote(String title, String dateCreated, String dateEnd, String description, int color) {
 
         SQLiteDatabase db = getWritableDatabase();
 
@@ -54,6 +58,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(COLUMN_NOTE_DATE_CREATE, dateCreated);
         values.put(COLUMN_NOTE_DATE_END, dateEnd);
         values.put(COLUMN_NOTE_DESCRIPTION, description);
+        values.put(COLUMN_NOTE_COLOR, color);
 
         db.insert(TABLE_MY_NOTE,null,values);
         db.close();
