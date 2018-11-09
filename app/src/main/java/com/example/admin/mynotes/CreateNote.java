@@ -45,14 +45,21 @@ public class CreateNote extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
+        // initialize Calender
+        calendar = Calendar.getInstance();
+
+//        String currDate = new SimpleDateFormat("YYYY-MM-dd", Locale.getDefault()).format(new Date());
+//        String currDateN;
+//        currDateN = String.format("%d-%d-%d", calendar.get(Calendar.YEAR),calendar.get(Calendar.YEAR),calendar.get(Calendar.YEAR));
+//        String currDateD = calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.YEAR);
         // initialize EditTexts
         titleEditText = findViewById(R.id.titleEditText);
         dateCreatedEditText = findViewById(R.id.dateCreatedEditText);
+//        dateCreatedEditText.setText(calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
+//        calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.YEAR)
         dateEndEditText = findViewById(R.id.dateEndEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
 
-        // initialize Calender
-        calendar = Calendar.getInstance();
 
         dbHandler = new DBHandler(this, null);
 
@@ -70,11 +77,11 @@ public class CreateNote extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
 
-                // set the Calender yeat, month, day to the year, month, day
+                // set the Calender year, month, day to the year, month, day
                 // set in the DatePicker
-                calendar.set(Calendar.YEAR,year);
+                calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
                 // call a method that updates the date EditText with the date that was set
                 // in the DatePicker
@@ -93,11 +100,11 @@ public class CreateNote extends AppCompatActivity {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
 
-                // set the Calender yeat, month, day to the year, month, day
+                // set the Calender year, month, day to the year, month, day
                 // set in the DatePicker
-                calendar.set(Calendar.YEAR,year);
+                calendar.set(Calendar.YEAR, year);
                 calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
                 // call a method that updates the date EditText with the date that was set
                 // in the DatePicker
@@ -105,7 +112,7 @@ public class CreateNote extends AppCompatActivity {
             }
         };
         // register an OnClickListener to the date EditText
-        dateCreatedEditText.setOnClickListener(new View.OnClickListener(){
+        dateCreatedEditText.setOnClickListener(new View.OnClickListener() {
             /**
              * This method get called when the date EditText is clicked
              * @param view because the date EditText that calls this method is techanically considered a
@@ -120,13 +127,13 @@ public class CreateNote extends AppCompatActivity {
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
-                ) .show();
+                ).show();
 
 
             }
         });
 
-        dateEndEditText.setOnClickListener(new View.OnClickListener(){
+        dateEndEditText.setOnClickListener(new View.OnClickListener() {
             /**
              * This method get called when the date EditText is clicked
              * @param view because the date EditText that calls this method is techanically considered a
@@ -141,7 +148,7 @@ public class CreateNote extends AppCompatActivity {
                         calendar.get(Calendar.YEAR),
                         calendar.get(Calendar.MONTH),
                         calendar.get(Calendar.DAY_OF_MONTH)
-                ) .show();
+                ).show();
 
 
             }
@@ -151,9 +158,11 @@ public class CreateNote extends AppCompatActivity {
         //dbHandler = new DBHandler(this,null);
 
     }
+
     /**
      * This method sets the Action Bar of the CreateList to whatever
      * is defined in the menu create list menu resource.
+     *
      * @param menu
      * @return true
      */
@@ -167,16 +176,17 @@ public class CreateNote extends AppCompatActivity {
 
     /**
      * this method gets called when an item in the overflow menu is selected.
-     * @param item Menuitem object that contains information about the item
-     *             selected  in the overflow : for ecxample , its id
+     *
+     * @param item MenuItem object that contains information about the item
+     *             selected  in the overflow : for example , its id
      * @return true if an item is selected, else false
      */
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // get the id of the item selected
-        switch (item.getItemId()){
-            case R.id.action_home :
+        switch (item.getItemId()) {
+            case R.id.action_home:
                 // initalize an intent for the CreateList, start intent,
                 // return true if the id in the itme selected is for the Main
                 // Activity
@@ -193,10 +203,11 @@ public class CreateNote extends AppCompatActivity {
 
     /**
      * This method get called when the add_list menu item get pushed.
+     *
      * @param menuItem because the add_list item that calls this method is
      *                 a menu item, we must pass the method a MenuItem.
      */
-    public void  createNote(MenuItem menuItem){
+    public void createNote(MenuItem menuItem) {
         //get data in EditText and store it in Strings
         String title = titleEditText.getText().toString();
         String dateCreate = dateCreatedEditText.getText().toString();
@@ -204,14 +215,13 @@ public class CreateNote extends AppCompatActivity {
         String description = descriptionEditText.getText().toString();
 
 
-        if(title.trim().equals("") || dateCreate.trim().equals("") || description.trim().equals("") ){
+        if (title.trim().equals("") || dateCreate.trim().equals("") || description.trim().equals("")) {
             // required date hasn't been input, so display Toast
             Toast.makeText(this, "Please enter a title, date created, and a description ", Toast.LENGTH_SHORT).show();
 
         } else if (!dateEnd.trim().equals("") && dateCreate.compareTo(dateEnd) > 0) {
             Toast.makeText(this, "End date cannot be before create date! ", Toast.LENGTH_SHORT).show();
-        }
-        else{
+        } else {
             // required data has been input, update the database and display a different Toast
             int color = plateColor();
             dbHandler.addMyNote(title, dateCreate, dateEnd, description, color);
@@ -231,7 +241,7 @@ public class CreateNote extends AppCompatActivity {
     /**
      * This method gets called when a date is set to the datePickerDialog
      */
-    public void updateDueDate(){
+    public void updateDueDate() {
         // create a SimpleDateFormat
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -239,7 +249,8 @@ public class CreateNote extends AppCompatActivity {
         // set the formatted
         dateCreatedEditText.setText(simpleDateFormat.format(calendar.getTime()));
     }
-    public void updateDueDateend(){
+
+    public void updateDueDateend() {
         // create a SimpleDateFormat
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
@@ -249,7 +260,6 @@ public class CreateNote extends AppCompatActivity {
     }
 
 
-
-    }
+}
 
 
