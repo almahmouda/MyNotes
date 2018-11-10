@@ -15,6 +15,7 @@
     <string name="label_description">Description:</string>
     <string name="hint_enter_title">Enter a title</string>
     <string name="hint_create_date">Tap to insert a date</string>
+    <string name="hint_set_date">(Optional) Double tap to set</string>
     <string name="hint_note">Type note here</string>
     <string name="action_edit_note">Edit</string>
     <string name="action_delete_note">Delete</string>

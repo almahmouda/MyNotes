@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,18 +20,22 @@ import java.util.Locale;
 
 public class CreateNote extends AppCompatActivity {
 
-    // declare an intent
+    // Declare an intent
     Intent intent;
-    // declare EditTexts - used to reference  the EditText in the resource file
+    // Declare EditTexts - used to reference  the EditText in the resource file
     EditText titleEditText;
     EditText dateCreatedEditText;
     EditText dateEndEditText;
     EditText descriptionEditText;
-
-
-    // declare Calendar - used to map the data selected in the DatePickerDialog
+    // Declare Calendar - used to map the data selected in the DatePickerDialog
     Calendar calendar;
+    // Declare a DBHandler to send data to the database
     DBHandler dbHandler;
+    // Create a FragmentManager object to manage the creation of the fragment in the current
+    // activity
+    FragmentManager fm = getSupportFragmentManager();
+    // Create a control index to know which button or view is calling the fragment
+    int dialogIndex = 0;
 
 
     @Override
@@ -40,26 +45,22 @@ public class CreateNote extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        // up button
+        // Implement an Up Button in the AppBar to return to the calling (parent) activity
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        // initialize Calender
+        // Initialize Calender
         calendar = Calendar.getInstance();
 
-//        String currDate = new SimpleDateFormat("YYYY-MM-dd", Locale.getDefault()).format(new Date());
-//        String currDateN;
-//        currDateN = String.format("%d-%d-%d", calendar.get(Calendar.YEAR),calendar.get(Calendar.YEAR),calendar.get(Calendar.YEAR));
-//        String currDateD = calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.YEAR);
-        // initialize EditTexts
+        // Initialize the EditTexts with associated views in the activity
         titleEditText = findViewById(R.id.titleEditText);
         dateCreatedEditText = findViewById(R.id.dateCreatedEditText);
-//        dateCreatedEditText.setText(calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.MONTH) + "-" + calendar.get(Calendar.DAY_OF_MONTH));
-//        calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.YEAR) + "-" + calendar.get(Calendar.YEAR)
         dateEndEditText = findViewById(R.id.dateEndEditText);
         descriptionEditText = findViewById(R.id.descriptionEditText);
 
+        // Set the current date in the dateCreateEditText
+        dateCreatedEditText.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.getTime()));
 
         dbHandler = new DBHandler(this, null);
 

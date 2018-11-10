@@ -70,8 +70,9 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/hint_create_date"
-                    android:inputType="date"
-                    tools:ignore="Autofill,RtlHardcoded" />
+                    android:inputType="none"
+                    android:textIsSelectable="true"
+                    tools:ignore="Autofill,RtlHardcoded,TextFields" />
             </TableRow>
 
             <TableRow
@@ -93,9 +94,10 @@
                     android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
-                    android:hint="@string/hint_create_date"
-                    android:inputType="date"
-                    tools:ignore="Autofill,RtlHardcoded" />
+                    android:hint="@string/hint_set_date"
+                    android:inputType="none"
+                    android:textIsSelectable="true"
+                    tools:ignore="Autofill,RtlHardcoded,TextFields" />
             </TableRow>
 
             <TableRow
