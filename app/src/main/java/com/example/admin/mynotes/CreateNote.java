@@ -1,16 +1,15 @@
 package com.example.admin.mynotes;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -18,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-public class CreateNote extends AppCompatActivity {
+public class CreateNote extends AppCompatActivity implements DatePickerFragment.OnFragmentInteractionListener {
 
     // Declare an intent
     Intent intent;
@@ -60,111 +59,57 @@ public class CreateNote extends AppCompatActivity {
         descriptionEditText = findViewById(R.id.descriptionEditText);
 
         // Set the current date in the dateCreateEditText
-        dateCreatedEditText.setText(new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(calendar.getTime()));
+        dateCreatedEditText.setText(new SimpleDateFormat("yyyy-MM-dd",
+                Locale.getDefault()).format(calendar.getTime()));
 
+        // Initialize dbHandler
         dbHandler = new DBHandler(this, null);
 
-
-        // create and initialize a DatePickerDialog and register and OnDateListener to it
-
-        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
-            /**
-             * This method get called when a date is set in the DatePickerDialog
-             * @param datePicker DatePicker object
-             * @param year year that set
-             * @param monthOfYear month that set
-             * @param dayOfMonth day that set
-             */
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-
-                // set the Calender year, month, day to the year, month, day
-                // set in the DatePicker
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                // call a method that updates the date EditText with the date that was set
-                // in the DatePicker
-                updateDueDate();
-            }
-        };
-
-        final DatePickerDialog.OnDateSetListener enddate = new DatePickerDialog.OnDateSetListener() {
-            /**
-             * This method get called when a date is set in the DatePickerDialog
-             * @param datePicker DatePicker object
-             * @param year year that set
-             * @param monthOfYear month that set
-             * @param dayOfMonth day that set
-             */
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
-
-                // set the Calender year, month, day to the year, month, day
-                // set in the DatePicker
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-                // call a method that updates the date EditText with the date that was set
-                // in the DatePicker
-                updateDueDateend();
-            }
-        };
         // register an OnClickListener to the date EditText
         dateCreatedEditText.setOnClickListener(new View.OnClickListener() {
             /**
              * This method get called when the date EditText is clicked
-             * @param view because the date EditText that calls this method is techanically considered a
-             *             view , we must pass the method a View.
+             * @param view because the date EditText that calls this method is technically
+             *             considered a view, we must pass the method a View.
              */
             @Override
             public void onClick(View view) {
-
-                // display the DatePickerDialog with current date selected
-                new DatePickerDialog(CreateNote.this,
-                        date,
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)
-                ).show();
-
-
+                // Set the dialogIndex for the dateCreatedEditText view
+                dialogIndex = 1;
+                // Call into view the DatePickerDialog
+                callFragment();
             }
         });
 
+        // register an OnClickListener to the date EditText
         dateEndEditText.setOnClickListener(new View.OnClickListener() {
             /**
              * This method get called when the date EditText is clicked
-             * @param view because the date EditText that calls this method is techanically considered a
-             *             view , we must pass the method a View.
+             * @param view because the date EditText that calls this method is technically
+             *             considered a view, we must pass the method a View.
              */
             @Override
             public void onClick(View view) {
-
-                // display the DatePickerDialog with current date selected
-                new DatePickerDialog(CreateNote.this,
-                        enddate,
-                        calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),
-                        calendar.get(Calendar.DAY_OF_MONTH)
-                ).show();
-
-
+                // Set the dialogIndex for the dateEndEditText view
+                dialogIndex = 2;
+                // Call into view the DatePickerDialog
+                callFragment();
             }
         });
 
-        //** initialize DBHandler
-        //dbHandler = new DBHandler(this,null);
+    }
 
+    // Creates and displays a new DatePickerDialog
+    public void callFragment() {
+        DialogFragment newDialog = new DatePickerFragment();
+        newDialog.show(fm, "Select Date");
     }
 
     /**
-     * This method sets the Action Bar of the CreateList to whatever
-     * is defined in the menu create list menu resource.
+     * This method sets the Action Bar of the CreateList to whatever is defined in the menu
+     * create list menu resource.
      *
-     * @param menu
+     * @param menu Menu object
      * @return true
      */
     @Override
@@ -176,7 +121,7 @@ public class CreateNote extends AppCompatActivity {
     }
 
     /**
-     * this method gets called when an item in the overflow menu is selected.
+     * This method gets called when an item in the overflow menu is selected.
      *
      * @param item MenuItem object that contains information about the item
      *             selected  in the overflow : for example , its id
@@ -197,8 +142,6 @@ public class CreateNote extends AppCompatActivity {
 
             default:
                 return super.onOptionsItemSelected(item);
-
-
         }
     }
 
@@ -215,22 +158,26 @@ public class CreateNote extends AppCompatActivity {
         String dateEnd = dateEndEditText.getText().toString();
         String description = descriptionEditText.getText().toString();
 
-
         if (title.trim().equals("") || dateCreate.trim().equals("") || description.trim().equals("")) {
-            // required date hasn't been input, so display Toast
-            Toast.makeText(this, "Please enter a title, date created, and a description ", Toast.LENGTH_SHORT).show();
-
+            // required data hasn't been input, so display Toast
+            Toast.makeText(this, "Please enter a title, date created, and a " +
+                    "description ", Toast.LENGTH_SHORT).show();
         } else if (!dateEnd.trim().equals("") && dateCreate.compareTo(dateEnd) > 0) {
-            Toast.makeText(this, "End date cannot be before create date! ", Toast.LENGTH_SHORT).show();
+            // Displays a Toast if the End Date is before the Create Date
+            Toast.makeText(this, "End date cannot be before create date! ",
+                    Toast.LENGTH_SHORT).show();
         } else {
-            // required data has been input, update the database and display a different Toast
+            // Initialize a random color to be added to the database
             int color = plateColor();
+            // required data has been input, update the database and display a different Toast
             dbHandler.addMyNote(title, dateCreate, dateEnd, description, color);
             Toast.makeText(this, "Note added", Toast.LENGTH_SHORT).show();
+            // Destroys this activity and returns to the calling activity
             finish();
         }
     }
 
+    // Creates a random color for the letter_plate in the ListView.
     private int plateColor() {
         int red = (int) (Math.random() * 200);
         int green = (int) (Math.random() * 200);
@@ -240,27 +187,31 @@ public class CreateNote extends AppCompatActivity {
     }
 
     /**
-     * This method gets called when a date is set to the datePickerDialog
+     * Override the interface method to set the date in the calling view.
+     * @param year the selected year
+     * @param month the selected month (months range from 0-11 where 0 represents January)
+     * @param day the selected day of the month
      */
-    public void updateDueDate() {
-        // create a SimpleDateFormat
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        // apply the SimpleDateFormat to the date set in the DatePickerDialog  and
-        // set the formatted
-        dateCreatedEditText.setText(simpleDateFormat.format(calendar.getTime()));
+    @Override
+    public void setDate(int year, int month, int day) {
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
+        switch (dialogIndex) {
+            case 1:
+                dateCreatedEditText.setText(new SimpleDateFormat("yyyy-MM-dd",
+                        Locale.getDefault()).format(calendar.getTime()));
+                Toast.makeText(this, "Create Date Set", Toast.LENGTH_SHORT).show();
+                break;
+            case 2:
+                dateEndEditText.setText(new SimpleDateFormat("yyyy-MM-dd",
+                        Locale.getDefault()).format(calendar.getTime()));
+                Toast.makeText(this, "End Date Set ", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                break;
+        }
     }
-
-    public void updateDueDateend() {
-        // create a SimpleDateFormat
-
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        // apply the SimpleDateFormat to the date set in the DatePickerDialog  and
-        // set the formatted
-        dateEndEditText.setText(simpleDateFormat.format(calendar.getTime()));
-    }
-
-
 }
 
 
