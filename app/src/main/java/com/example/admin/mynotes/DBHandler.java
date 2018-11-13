@@ -106,4 +106,18 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    void updateNote(int id, String title, String dateCreated, String dateEnd, String description) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NOTE_TITLE, title);
+        values.put(COLUMN_NOTE_DATE_CREATE, dateCreated);
+        values.put(COLUMN_NOTE_DATE_END, dateEnd);
+        values.put(COLUMN_NOTE_DESCRIPTION, description);
+
+        db.update(TABLE_MY_NOTE, values, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+
+        db.close();
+    }
 }

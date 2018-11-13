@@ -23,4 +23,7 @@
     <string name="labelTitle">Title goes here</string>
     <string name="endDateHere">End date goes here</string>
     <string name="createDateHere">Create date goes here</string>
+    <string name="title_activity_edit_note">Edit Note</string>
+    <string name="action_discard_changes">Discard</string>
+    <string name="action_save_changes">Save</string>
 </resources>
