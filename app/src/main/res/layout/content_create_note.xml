@@ -13,10 +13,8 @@
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,7 +32,8 @@
                     android:id="@+id/titletextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:text="@string/title"
                     tools:ignore="RtlHardcoded" />
 
@@ -42,11 +41,12 @@
                     android:id="@+id/titleEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/hint_enter_title"
                     android:inputType="text|textCapWords"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     tools:ignore="Autofill,RtlHardcoded" />
             </TableRow>
 
@@ -58,7 +58,8 @@
                     android:id="@+id/dateCreatedtextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:text="@string/date_created"
                     tools:ignore="RtlHardcoded" />
 
@@ -66,11 +67,12 @@
                     android:id="@+id/dateCreatedEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/hint_create_date"
                     android:inputType="none"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textIsSelectable="true"
                     tools:ignore="Autofill,RtlHardcoded,TextFields" />
             </TableRow>
@@ -83,7 +85,8 @@
                     android:id="@+id/dateEndtextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:text="@string/end_date"
                     tools:ignore="RtlHardcoded" />
 
@@ -91,11 +94,12 @@
                     android:id="@+id/dateEndEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/hint_set_date"
                     android:inputType="none"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:textIsSelectable="true"
                     tools:ignore="Autofill,RtlHardcoded,TextFields" />
             </TableRow>
@@ -108,7 +112,8 @@
                     android:id="@+id/descriptiontextView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     android:text="@string/discription"
                     tools:ignore="RtlHardcoded" />
 
@@ -116,11 +121,12 @@
                     android:id="@+id/descriptionEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="8dp"
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/hint_note"
                     android:inputType="textCapSentences|textAutoCorrect|textMultiLine"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
                     tools:ignore="Autofill,RtlHardcoded" />
             </TableRow>
         </TableLayout>

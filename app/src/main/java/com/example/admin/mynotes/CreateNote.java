@@ -106,15 +106,15 @@ public class CreateNote extends AppCompatActivity implements DatePickerFragment.
     }
 
     /**
-     * This method sets the Action Bar of the CreateList to whatever is defined in the menu
-     * create list menu resource.
+     * This method sets the Action Bar of the CreateNote to whatever is defined in the
+     * menu_create_note menu resource.
      *
      * @param menu Menu object
      * @return true
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // set the Action Bar of the CreateList to whatever  is defined
+        // set the Action Bar of the CreateNote to whatever  is defined
         // in the menu main menu resource
         getMenuInflater().inflate(R.menu.menu_create_note, menu);
         return true;
