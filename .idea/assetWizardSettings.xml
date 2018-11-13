@@ -33,7 +33,6 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="assetType" value="IMAGE" />
                                       <entry key="imageAsset" value="C:\Users\admin\Desktop\ic_launcher\web_hi_res_512.png" />
                                       <entry key="outputName" value="ic_edit" />
                                       <entry key="theme" value="HOLO_DARK" />
@@ -69,6 +68,11 @@
                                 </PersistentState>
                               </value>
                             </entry>
+                          </map>
+                        </option>
+                        <option name="values">
+                          <map>
+                            <entry key="outputIconType" value="ACTIONBAR" />
                           </map>
                         </option>
                       </PersistentState>
