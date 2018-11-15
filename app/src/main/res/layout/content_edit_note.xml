@@ -68,9 +68,10 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/hint_create_date"
-                    android:inputType="text|textCapWords"
+                    android:inputType="none"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
+                    android:textIsSelectable="true"
                     tools:ignore="Autofill,TextFields" />
             </TableRow>
 
@@ -84,7 +85,7 @@
                     android:layout_height="wrap_content"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
-                    android:text="@string/title" />
+                    android:text="@string/end_date" />
 
                 <EditText
                     android:id="@+id/change_eDate"
@@ -93,9 +94,10 @@
                     android:layout_weight="1"
                     android:ems="10"
                     android:hint="@string/hint_set_date"
-                    android:inputType="text|textCapWords"
+                    android:inputType="none"
                     android:paddingLeft="4dp"
                     android:paddingRight="4dp"
+                    android:textIsSelectable="true"
                     tools:ignore="Autofill,TextFields" />
             </TableRow>
 

@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
     private static final String DATABASE_NAME = "myNote.db";
 
     private static final String TABLE_MY_NOTE = "my_notes";
@@ -18,6 +18,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String COLUMN_NOTE_DATE_END = "date_end";
     private static final String COLUMN_NOTE_DESCRIPTION = "description";
     private static final String COLUMN_NOTE_COLOR = "color";
+    private static final String TABLE_TRASH = "trash";
 
 
     DBHandler (Context context, SQLiteDatabase.CursorFactory factory){
@@ -27,7 +28,7 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        String query = "CREATE TABLE " + TABLE_MY_NOTE + "(" +
+        String qCrateNoteTable = "CREATE TABLE " + TABLE_MY_NOTE + "(" +
                 COLUMN_LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 COLUMN_NOTE_TITLE + " TEXT, " +
                 COLUMN_NOTE_DATE_CREATE + " TEXT, " +
@@ -36,14 +37,32 @@ public class DBHandler extends SQLiteOpenHelper {
                 COLUMN_NOTE_COLOR + " INTEGER" +
                 ");";
 
+        sqLiteDatabase.execSQL(qCrateNoteTable);
 
-        sqLiteDatabase.execSQL(query);
+        String qCreateTrashTable = "CREATE TABLE " + TABLE_TRASH + "(" +
+                COLUMN_LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COLUMN_NOTE_TITLE + " TEXT, " +
+                COLUMN_NOTE_DATE_CREATE + " TEXT, " +
+                COLUMN_NOTE_DATE_END + " TEST, " +
+                COLUMN_NOTE_DESCRIPTION + " TEST, " +
+                COLUMN_NOTE_COLOR + " INTEGER" +
+                ");";
+
+        sqLiteDatabase.execSQL(qCreateTrashTable);
     }
 
+    /**
+     * Override the onUpgrade method to drop tables when the database version is changed
+     *
+     * @param sqLiteDatabase database being changed
+     * @param oldVersion     previous version of database
+     * @param newVersion     new version of database
+     */
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MY_NOTE );
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MY_NOTE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TRASH );
 
         onCreate(sqLiteDatabase);
     }
@@ -63,12 +82,19 @@ public class DBHandler extends SQLiteOpenHelper {
         db.insert(TABLE_MY_NOTE,null,values);
         db.close();
     }
+
     Cursor getMyNote(){
         SQLiteDatabase db = getWritableDatabase();
 
-        return db.rawQuery("SELECT * FROM "+ TABLE_MY_NOTE,null);
+        return db.rawQuery("SELECT * FROM "+ TABLE_MY_NOTE, null);
     }
 
+    /**
+     * This method fetches the specified attribute form the notes table that matches the id
+     * @param id id of the note
+     * @param attribute column to fetch data from
+     * @return String representation of the data in the specified column
+     */
     String getNoteAttribute(int id, String attribute) {
         SQLiteDatabase db = getWritableDatabase();
 
@@ -106,6 +132,37 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    void trashNote(int id) {
+        SQLiteDatabase db = getWritableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT title, date_created, date_end, description, " +
+                "color FROM my_notes WHERE _id = " + id, null);
+
+        cursor.moveToFirst();
+
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_NOTE_TITLE, cursor.getString(0));
+        values.put(COLUMN_NOTE_DATE_CREATE, cursor.getString(1));
+        values.put(COLUMN_NOTE_DATE_END, cursor.getString(2));
+        values.put(COLUMN_NOTE_DESCRIPTION, cursor.getString(3));
+        values.put(COLUMN_NOTE_COLOR, cursor.getInt(4));
+
+        db.insert(TABLE_TRASH, null, values);
+        db.delete(TABLE_MY_NOTE, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+
+        cursor.close();
+        db.close();
+    }
+
+    /**
+     * Updates the column values for specific id
+     * @param id id of note to edit
+     * @param title replaces the old title
+     * @param dateCreated replaces the old create date
+     * @param dateEnd replaced the old end date if added
+     * @param description replaces the old description
+     */
     void updateNote(int id, String title, String dateCreated, String dateEnd, String description) {
         SQLiteDatabase db = getWritableDatabase();
 

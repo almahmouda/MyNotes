@@ -80,7 +80,7 @@ public class ViewNote extends AppCompatActivity {
                 return true;
             case R.id.action_delete_note:
                 Toast.makeText(this, noteTitle + " Deleted.", Toast.LENGTH_LONG).show();
-                dbHandler.deleteNote((int) id);
+                dbHandler.trashNote((int) id);
                 finish();
             default:
                 return super.onOptionsItemSelected(item);
