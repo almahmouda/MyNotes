@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/letter_plate"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -29,10 +29,9 @@
         android:layout_marginRight="8dp"
         android:text="@string/labelTitle"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="@+id/letter_plate"
+        app:layout_constraintBaseline_toBaselineOf="@+id/label_initial"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/letter_plate"
-        app:layout_constraintTop_toTopOf="@+id/letter_plate" />
+        app:layout_constraintStart_toEndOf="@+id/letter_plate" />
 
     <TextView
         android:id="@+id/label_initial"
@@ -41,9 +40,9 @@
         android:gravity="center_vertical|center_horizontal"
         android:text="@string/label_initial"
         android:textColor="@android:color/background_light"
-        android:textSize="36sp"
+        android:textSize="24sp"
         android:textStyle="bold"
-        app:fontFamily="cursive"
+        app:fontFamily="casual"
         app:layout_constraintBottom_toBottomOf="@+id/letter_plate"
         app:layout_constraintEnd_toEndOf="@+id/letter_plate"
         app:layout_constraintStart_toStartOf="@+id/letter_plate"

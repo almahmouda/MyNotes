@@ -7,4 +7,10 @@
         android:orderInCategory="1"
         android:title="@string/action_create_note"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_view_trash"
+        android:orderInCategory="2"
+        android:title="@string/trash_can"
+        app:showAsAction="never" />
 </menu>

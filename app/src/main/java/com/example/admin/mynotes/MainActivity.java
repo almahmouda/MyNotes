@@ -59,10 +59,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.action_create_note:
                 intent = new Intent(this, CreateNote.class);
                 startActivity(intent);
+                return true;
+            case R.id.action_view_trash:
+                viewTrash();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -71,6 +74,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void createNote(View view) {
         intent = new Intent(this, CreateNote.class);
+        startActivity(intent);
+    }
+
+    public void viewTrash() {
+        intent = new Intent(this, TrashListActivity.class);
         startActivity(intent);
     }
 
