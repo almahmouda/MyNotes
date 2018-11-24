@@ -19,7 +19,6 @@ public class TrashListActivity extends AppCompatActivity {
 
     private static final int RESTORE = -1;
     private static final int PERMANENT_DELETE = 1;
-    private static final int NO_ACTION = 0;
     private static final int VIEW_CODE = 2;
 
     Intent intent;
@@ -70,7 +69,7 @@ public class TrashListActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == VIEW_CODE) {
+        if (requestCode == VIEW_CODE && data != null) {
             int position;
             if (resultCode == RESTORE || resultCode == PERMANENT_DELETE) {
                 position = data.getIntExtra("position", 0);
