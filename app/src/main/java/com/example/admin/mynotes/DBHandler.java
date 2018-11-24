@@ -158,7 +158,7 @@ public class DBHandler extends SQLiteOpenHelper {
     void deleteNote(int id) {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.delete(TABLE_MY_NOTE, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+        db.delete(TrashNoteMdl.TABLE_NAME, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
 
         db.close();
     }

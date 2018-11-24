@@ -1,5 +1,6 @@
 package com.example.admin.mynotes;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +12,12 @@ import com.example.admin.mynotes.model.TrashNoteMdl;
 
 public class ViewTrashActivity extends AppCompatActivity {
 
+    private static final int RESTORE = -1;
+    private static final int PERMANENT_DELETE = 1;
+
+    Intent intent;
     Bundle bundle;
-    long id;
+    int position;
     TrashNoteMdl trashNote;
     DBHandler db;
     TextView create_date;
@@ -27,11 +32,24 @@ public class ViewTrashActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab_restore);
-        fab.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab_restore, fab_delete;
+        fab_restore = findViewById(R.id.fab_restore);
+        fab_delete = findViewById(R.id.fab_pDelete);
+        fab_restore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 restore(trashNote.get_id());
+            }
+        });
+        fab_delete.setOnClickListener(new View.OnClickListener() {
+            /**
+             * Called when a view has been clicked.
+             *
+             * @param v The view that was clicked.
+             */
+            @Override
+            public void onClick(View v) {
+                delete(trashNote.get_id());
             }
         });
 
@@ -41,8 +59,10 @@ public class ViewTrashActivity extends AppCompatActivity {
 
         bundle = this.getIntent().getExtras();
 
-        if (bundle != null)
+        if (bundle != null) {
             trashNote = bundle.getParcelable("viewTrash");
+            position = bundle.getInt("position");
+        }
 
         db = new DBHandler(this, null);
 
@@ -57,10 +77,22 @@ public class ViewTrashActivity extends AppCompatActivity {
         create_date.setText(note.getDate_created());
         end_date.setText(note.getDate_end());
         description.setText(note.getDescription());
+        this.setTitle(note.getTitle());
     }
 
     void restore(long id) {
         db.restoreNote((int) id);
+        intent = new Intent();
+        intent.putExtra("position", position);
+        setResult(RESTORE, intent);
+        finish();
+    }
+
+    void delete(long id) {
+        db.deleteNote((int) id);
+        intent = new Intent();
+        intent.putExtra("position", position);
+        setResult(PERMANENT_DELETE, intent);
         finish();
     }
 }
