@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this, null);
 //
         noteListView = findViewById(R.id.note_list_view);
-//
+
         noteListAdapter = new NoteList(this, dbHandler.getMyNote(), 0);
 
         noteListView.setAdapter(noteListAdapter);
