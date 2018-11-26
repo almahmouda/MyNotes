@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.SparseIntArray;
 
 import com.example.admin.mynotes.model.TrashNoteMdl;
 
@@ -23,8 +24,6 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String COLUMN_NOTE_DATE_END = "date_end";
     private static final String COLUMN_NOTE_DESCRIPTION = "description";
     private static final String COLUMN_NOTE_COLOR = "color";
-//    private static final String TABLE_NAME = "trash";
-
 
     DBHandler (Context context, SQLiteDatabase.CursorFactory factory){
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
@@ -85,6 +84,27 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
 
         return db.rawQuery("SELECT * FROM "+ TABLE_MY_NOTE, null);
+    }
+
+    SparseIntArray positionId() {
+        SparseIntArray pi = new SparseIntArray();
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_MY_NOTE;
+        int pos = 0;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                pi.put(pos, cursor.getInt(0));
+                ++pos;
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return pi;
     }
 
     List<TrashNoteMdl> getTrash() {

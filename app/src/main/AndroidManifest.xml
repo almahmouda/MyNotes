@@ -54,6 +54,7 @@
             android:name=".TrashListActivity"
             android:label="@string/title_activity_trash_note"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -63,6 +64,7 @@
             android:name=".ViewTrashActivity"
             android:label="@string/title_activity_view_trash"
             android:parentActivityName=".TrashListActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
