@@ -83,8 +83,10 @@
                     android:paddingTop="8dp"
                     android:paddingRight="8dp"
                     android:paddingBottom="64dp"
-                    android:text="Area for displaying note information" />
+                    android:text="Area for displaying note information"
+                    tools:ignore="HardcodedText" />
             </TableRow>
         </TableLayout>
     </ScrollView>
+
 </android.support.constraint.ConstraintLayout>

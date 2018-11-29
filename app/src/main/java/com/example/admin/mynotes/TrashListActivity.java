@@ -19,6 +19,7 @@ import com.example.admin.mynotes.model.TrashNoteMdl;
 import com.example.admin.mynotes.util.RecyclerTouchListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TrashListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -26,6 +27,7 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
     private static final int RESTORE = -1;
     private static final int PERMANENT_DELETE = 1;
     private static final int VIEW_CODE = 2;
+    private static final int UPBUTTON = 0;
 
     Intent intent;
     DBHandler dbHandler;
@@ -33,6 +35,7 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
     RecyclerView trashReView;
     TrashListAdapter listAdapter;
     Spinner spinner;
+    boolean test = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,18 +69,15 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
         }));
 
         spinner = findViewById(R.id.trash_sort_spinner_bar);
-//        if(spinner != null){
         spinner.setOnItemSelectedListener(this);
-//        }
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.sort_label, android.R.layout.simple_spinner_item);
+                R.array.sort_label, R.layout.sort_spinner_item);
 
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinner.setAdapter(adapter);
-
-
+        spinner.setVisibility(View.GONE);
     }
 
     public void viewTrashNote(TrashNoteMdl note, int position) {
@@ -90,12 +90,15 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == VIEW_CODE && data != null) {
+        if (requestCode == VIEW_CODE) {
             int position;
-            if (resultCode == RESTORE || resultCode == PERMANENT_DELETE) {
+            if ((resultCode == RESTORE || resultCode == PERMANENT_DELETE) && data != null) {
                 position = data.getIntExtra("position", 0);
                 trashNotes.remove(position);
                 listAdapter.notifyItemRemoved(position);
+            }
+            if (resultCode == UPBUTTON) {
+                listAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -104,41 +107,11 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_trash_list, menu);
 
-        MenuItem spinItem = menu.findItem(R.id.trash_sort);
-        Spinner spinner = (Spinner) spinItem.getActionView();
-
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.sort_label, android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        spinner.setAdapter(adapter);
-
-//        MenuItem.OnActionExpandListener expandListener = new MenuItem.OnActionExpandListener() {
-//            @Override
-//            public boolean onMenuItemActionExpand(MenuItem item) {
-//                displayToast(1);
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onMenuItemActionCollapse(MenuItem item) {
-//                displayToast(-1);
-//                return true;
-//            }
-//        };
-
-//
-
         return true;
     }
 
-    void displayToast(int i) {
-        if (i == -1) {
-            Toast.makeText(this, "away", Toast.LENGTH_SHORT).show();
-        } else if (i == 1) {
-            Toast.makeText(this, "down", Toast.LENGTH_SHORT).show();
-        }
+    void displayToast(String i) {
+        Toast.makeText(this, i, Toast.LENGTH_SHORT).show();
     }
 
 
@@ -158,7 +131,20 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
      */
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+        String spinnerLabel = parent.getItemAtPosition(position).toString();
+        displayToast(spinnerLabel);
+        switch (spinnerLabel) {
+            case "Default":
+                Collections.sort(trashNotes, TrashNoteMdl.Comparators.ID);
+                listAdapter.notifyDataSetChanged();
+//                menuItem.collapseActionView();
+                break;
+            case "Alphabetically":
+                Collections.sort(trashNotes, TrashNoteMdl.Comparators.ALPHA);
+                listAdapter.notifyDataSetChanged();
+//                menuItem.collapseActionView();
+                break;
+        }
     }
 
     /**
@@ -170,6 +156,19 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
      */
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void showSort(MenuItem item) {
+
+        if (!test) {
+            spinner.setVisibility(View.VISIBLE);
+            test = !test;
+        } else {
+            spinner.setVisibility(View.GONE);
+            test = !test;
+        }
+
 
     }
 }

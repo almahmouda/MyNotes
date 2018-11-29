@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ public class ViewTrashActivity extends AppCompatActivity {
 
     private static final int RESTORE = -1;
     private static final int PERMANENT_DELETE = 1;
+    private static final int UPBUTTON = 0;
 
     Intent intent;
     Bundle bundle;
@@ -80,6 +82,19 @@ public class ViewTrashActivity extends AppCompatActivity {
         this.setTitle(note.getTitle());
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+//                setResult(UPBUTTON);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     void restore(long id) {
         db.restoreNote((int) id);
         intent = new Intent();
@@ -93,6 +108,10 @@ public class ViewTrashActivity extends AppCompatActivity {
         intent = new Intent();
         intent.putExtra("position", position);
         setResult(PERMANENT_DELETE, intent);
+        finish();
+    }
+
+    public void testClose(View view) {
         finish();
     }
 }

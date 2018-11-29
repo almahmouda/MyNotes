@@ -29,6 +29,7 @@
     <string name="title_activity_trash_note">Trash</string>
     <string name="trash_can">Trash Can</string>
     <string name="title_activity_view_trash">View Trash</string>
+    <string name="action_sort">Sort</string>
     <string-array name="sort_label">
         <item>Default</item>
         <item>Alphabetically</item>

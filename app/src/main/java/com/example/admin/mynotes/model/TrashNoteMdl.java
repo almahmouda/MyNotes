@@ -3,7 +3,9 @@ package com.example.admin.mynotes.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class TrashNoteMdl implements Parcelable {
+import java.util.Comparator;
+
+public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
 
     // columns for SQL query
     public static final String TABLE_NAME = "trash";
@@ -54,9 +56,10 @@ public class TrashNoteMdl implements Parcelable {
         this.date_end = date_end;
         this.description = description;
         this.color = color;
+
     }
 
-    public TrashNoteMdl(Parcel in) {
+    private TrashNoteMdl(Parcel in) {
         _id = in.readInt();
         title = in.readString();
         date_created = in.readString();
@@ -143,5 +146,38 @@ public class TrashNoteMdl implements Parcelable {
         dest.writeString(date_end);
         dest.writeString(description);
         dest.writeInt(color);
+    }
+
+    /**
+     * Compares this object with the specified object for order.  Returns a
+     * negative integer, zero, or a positive integer as this object is less
+     * than, equal to, or greater than the specified object.
+     *
+     * @param o the object to be compared.
+     * @return a negative integer, zero, or a positive integer as this object
+     * is less than, equal to, or greater than the specified object.
+     * @throws NullPointerException if the specified object is null
+     * @throws ClassCastException   if the specified object's type prevents it
+     *                              from being compared to this object.
+     */
+    @Override
+    public int compareTo(TrashNoteMdl o) {
+        return Comparators.ALPHA.compare(this, o);
+    }
+
+    public static class Comparators {
+        public static Comparator<TrashNoteMdl> ID = new Comparator<TrashNoteMdl>() {
+            @Override
+            public int compare(TrashNoteMdl o1, TrashNoteMdl o2) {
+                return o1._id - o2._id;
+            }
+        };
+        public static Comparator<TrashNoteMdl> ALPHA = new Comparator<TrashNoteMdl>() {
+            @Override
+            public int compare(TrashNoteMdl o1, TrashNoteMdl o2) {
+                return o1.title.compareTo(o2.title);
+            }
+        };
+
     }
 }
