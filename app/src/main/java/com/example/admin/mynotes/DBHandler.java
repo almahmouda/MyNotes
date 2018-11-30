@@ -128,6 +128,12 @@ public class DBHandler extends SQLiteOpenHelper {
                         TrashNoteMdl.COLUMN_NOTE_DESCRIPTION)));
                 trash.setTitle(cursor.getString(cursor.getColumnIndex(
                         TrashNoteMdl.COLUMN_NOTE_TITLE)));
+                trash.setTimestamp_create(cursor.getString(cursor.getColumnIndex(
+                        TrashNoteMdl.COLUMN_NOTE_STAMP_CREATE)));
+                trash.setTimestamp_edit(cursor.getString(cursor.getColumnIndex(
+                        TrashNoteMdl.COLUMN_NOTE_STAMP_EDIT)));
+                trash.setTimestamp_delete(cursor.getString(cursor.getColumnIndex(
+                        TrashNoteMdl.COLUMN_NOTE_STAMP_DELETE)));
 
                 trashList.add(trash);
 
@@ -210,8 +216,8 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(TrashNoteMdl.COLUMN_NOTE_DATE_END, cursor.getString(2));
         values.put(TrashNoteMdl.COLUMN_NOTE_DESCRIPTION, cursor.getString(3));
         values.put(TrashNoteMdl.COLUMN_NOTE_COLOR, cursor.getInt(4));
-        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_CREATE, cursor.getInt(5));
-        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_EDIT, cursor.getInt(6));
+        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_CREATE, cursor.getString(5));
+        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_EDIT, cursor.getString(6));
 
         db.insert(TrashNoteMdl.TABLE_NAME, null, values);
         db.delete(NoteMdl.TABLE_NAME, NoteMdl.COLUMN_LIST_ID + " = ?",
@@ -245,8 +251,8 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(TrashNoteMdl.COLUMN_NOTE_DATE_END, cursor.getString(2));
         values.put(TrashNoteMdl.COLUMN_NOTE_DESCRIPTION, cursor.getString(3));
         values.put(TrashNoteMdl.COLUMN_NOTE_COLOR, cursor.getInt(4));
-        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_CREATE, cursor.getInt(5));
-        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_EDIT, cursor.getInt(6));
+        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_CREATE, cursor.getString(5));
+        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_EDIT, cursor.getString(6));
 
         db.insert(NoteMdl.TABLE_NAME, null, values);
         db.delete(TrashNoteMdl.TABLE_NAME, TrashNoteMdl.COLUMN_LIST_ID + " = ?",

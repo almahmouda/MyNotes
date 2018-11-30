@@ -28,6 +28,7 @@
             android:layout_gravity="center"
             android:gravity="center"
             android:popupBackground="@android:color/background_light"
+            android:spinnerMode="dialog"
             tools:listitem="@layout/sort_spinner_item" />
 
     </android.support.design.widget.AppBarLayout>

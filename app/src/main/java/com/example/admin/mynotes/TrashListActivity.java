@@ -74,7 +74,7 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.sort_label, R.layout.sort_spinner_item);
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.sort_spinner_dropdown);
 
         spinner.setAdapter(adapter);
         spinner.setVisibility(View.GONE);
@@ -141,6 +141,16 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
                 break;
             case "Alphabetically":
                 Collections.sort(trashNotes, TrashNoteMdl.Comparators.ALPHA);
+                listAdapter.notifyDataSetChanged();
+//                menuItem.collapseActionView();
+                break;
+            case "Recent Created":
+                Collections.sort(trashNotes, TrashNoteMdl.Comparators.RE_CREATE_DATE);
+                listAdapter.notifyDataSetChanged();
+//                menuItem.collapseActionView();
+                break;
+            case "Recent Deleted":
+                Collections.sort(trashNotes, TrashNoteMdl.Comparators.RE_DELETE_DATE);
                 listAdapter.notifyDataSetChanged();
 //                menuItem.collapseActionView();
                 break;

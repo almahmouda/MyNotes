@@ -31,7 +31,10 @@
     <string name="title_activity_view_trash">View Trash</string>
     <string name="action_sort">Sort</string>
     <string-array name="sort_label">
+        <item>Sort By:</item>
         <item>Default</item>
+        <item>Recent Created</item>
+        <item>Recent Deleted</item>
         <item>Alphabetically</item>
     </string-array>
 </resources>

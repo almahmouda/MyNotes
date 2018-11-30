@@ -224,7 +224,24 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
                 return o2.title.compareTo(o1.title);
             }
         };
-        // TODO: include the new timestamps for comparison
+        public static Comparator<TrashNoteMdl> RE_CREATE_DATE = new Comparator<TrashNoteMdl>() {
+            @Override
+            public int compare(TrashNoteMdl o1, TrashNoteMdl o2) {
+                return o2.timestamp_create.compareTo(o1.timestamp_create);
+            }
+        };
+        public static Comparator<TrashNoteMdl> CREATE_DATE = new Comparator<TrashNoteMdl>() {
+            @Override
+            public int compare(TrashNoteMdl o1, TrashNoteMdl o2) {
+                return o1.timestamp_create.compareTo(o2.timestamp_create);
+            }
+        };
+        public static Comparator<TrashNoteMdl> RE_DELETE_DATE = new Comparator<TrashNoteMdl>() {
+            @Override
+            public int compare(TrashNoteMdl o1, TrashNoteMdl o2) {
+                return o2.timestamp_delete.compareTo(o1.timestamp_delete);
+            }
+        };
 
     }
 }
