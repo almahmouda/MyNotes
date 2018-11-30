@@ -5,10 +5,10 @@ import android.os.Parcelable;
 
 import java.util.Comparator;
 
-public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
+public class NoteMdl implements Parcelable, Comparable<NoteMdl> {
 
     // columns for SQL query
-    public static final String TABLE_NAME = "trash";
+    public static final String TABLE_NAME = "my_notes";
     public static final String COLUMN_LIST_ID = "_id";
     public static final String COLUMN_NOTE_TITLE = "title";
     public static final String COLUMN_NOTE_DATE_CREATE = "date_created";
@@ -17,7 +17,6 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
     public static final String COLUMN_NOTE_COLOR = "color";
     public static final String COLUMN_NOTE_STAMP_CREATE = "created";
     public static final String COLUMN_NOTE_STAMP_EDIT = "edited";
-    public static final String COLUMN_NOTE_STAMP_DELETE = "deleted";
 
     // Create table SQL query
     public static final String CREATE_TABLE =
@@ -28,21 +27,22 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
                     COLUMN_NOTE_DATE_END + " TEST, " +
                     COLUMN_NOTE_DESCRIPTION + " TEST, " +
                     COLUMN_NOTE_COLOR + " INTEGER, " +
-                    COLUMN_NOTE_STAMP_CREATE + " TEXT, " +
-                    COLUMN_NOTE_STAMP_EDIT + " TEXT, " +
-                    COLUMN_NOTE_STAMP_DELETE + " DATETIME DEFAULT (datetime('now', 'localtime'))" +
+                    COLUMN_NOTE_STAMP_CREATE + " DATETIME DEFAULT (datetime('now', 'localtime')), " +
+                    COLUMN_NOTE_STAMP_EDIT + " DATETIME DEFAULT (datetime('now', 'localtime'))" +
                     ");";
-    public static final Parcelable.Creator<TrashNoteMdl> CREATOR = new Creator<TrashNoteMdl>() {
+
+    public static final Parcelable.Creator<NoteMdl> CREATOR = new Parcelable.Creator<NoteMdl>() {
         @Override
-        public TrashNoteMdl createFromParcel(Parcel source) {
-            return new TrashNoteMdl(source);
+        public NoteMdl createFromParcel(Parcel source) {
+            return new NoteMdl(source);
         }
 
         @Override
-        public TrashNoteMdl[] newArray(int size) {
-            return new TrashNoteMdl[0];
+        public NoteMdl[] newArray(int size) {
+            return new NoteMdl[0];
         }
     };
+
     // fields for creating trash note
     public int _id;
     public String title;
@@ -52,14 +52,12 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
     public int color;
     public String timestamp_create;
     public String timestamp_edit;
-    public String timestamp_delete;
 
-    public TrashNoteMdl() {
+    public NoteMdl() {
     }
 
-    public TrashNoteMdl(int _id, String title, String date_created, String date_end,
-                        String description, int color, String stamp_create, String stamp_edit,
-                        String stamp_delete) {
+    public NoteMdl(int _id, String title, String date_created, String date_end,
+                   String description, int color, String stamp_create, String stamp_edit) {
         this._id = _id;
         this.title = title;
         this.date_created = date_created;
@@ -68,11 +66,9 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
         this.color = color;
         this.timestamp_create = stamp_create;
         this.timestamp_edit = stamp_edit;
-        this.timestamp_delete = stamp_delete;
-
     }
 
-    private TrashNoteMdl(Parcel in) {
+    private NoteMdl(Parcel in) {
         _id = in.readInt();
         title = in.readString();
         date_created = in.readString();
@@ -81,7 +77,6 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
         color = in.readInt();
         timestamp_create = in.readString();
         timestamp_edit = in.readString();
-        timestamp_delete = in.readString();
     }
 
     public int get_id() {
@@ -148,14 +143,6 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
         this.timestamp_edit = timestamp_edit;
     }
 
-    public String getTimestamp_delete() {
-        return timestamp_delete;
-    }
-
-    public void setTimestamp_delete(String timestamp_delete) {
-        this.timestamp_delete = timestamp_delete;
-    }
-
     /**
      * Describe the kinds of special objects contained in this Parcelable
      * instance's marshaled representation. For example, if the object will
@@ -188,7 +175,6 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
         dest.writeInt(color);
         dest.writeString(timestamp_create);
         dest.writeString(timestamp_edit);
-        dest.writeString(timestamp_delete);
     }
 
     /**
@@ -204,24 +190,30 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
      *                              from being compared to this object.
      */
     @Override
-    public int compareTo(TrashNoteMdl o) {
-        return Comparators.ALPHA.compare(this, o);
+    public int compareTo(NoteMdl o) {
+        return NoteMdl.Comparators.ALPHA.compare(this, o);
     }
 
     /**
      *
      */
     public static class Comparators {
-        public static Comparator<TrashNoteMdl> ID = new Comparator<TrashNoteMdl>() {
+        public static Comparator<NoteMdl> ID = new Comparator<NoteMdl>() {
             @Override
-            public int compare(TrashNoteMdl o1, TrashNoteMdl o2) {
+            public int compare(NoteMdl o1, NoteMdl o2) {
                 return o1._id - o2._id;
             }
         };
-        public static Comparator<TrashNoteMdl> ALPHA = new Comparator<TrashNoteMdl>() {
+        public static Comparator<NoteMdl> ALPHA = new Comparator<NoteMdl>() {
             @Override
-            public int compare(TrashNoteMdl o1, TrashNoteMdl o2) {
-                return o2.title.compareTo(o1.title);
+            public int compare(NoteMdl o1, NoteMdl o2) {
+                return o1.title.compareTo(o2.title);
+            }
+        };
+        public static Comparator<NoteMdl> C_DATE = new Comparator<NoteMdl>() {
+            @Override
+            public int compare(NoteMdl o1, NoteMdl o2) {
+                return o2.timestamp_create.compareTo(o1.timestamp_create);
             }
         };
         // TODO: include the new timestamps for comparison

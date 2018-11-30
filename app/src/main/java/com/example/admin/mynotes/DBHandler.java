@@ -1,12 +1,13 @@
 package com.example.admin.mynotes;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.SparseIntArray;
 
+import com.example.admin.mynotes.model.NoteMdl;
 import com.example.admin.mynotes.model.TrashNoteMdl;
 
 import java.util.ArrayList;
@@ -14,38 +15,35 @@ import java.util.List;
 
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "myNote.db";
 
-    private static final String TABLE_MY_NOTE = "my_notes";
-    private static final String COLUMN_LIST_ID ="_id";
-    private static final String COLUMN_NOTE_TITLE = "title";
-    private static final String COLUMN_NOTE_DATE_CREATE = "date_created";
-    private static final String COLUMN_NOTE_DATE_END = "date_end";
-    private static final String COLUMN_NOTE_DESCRIPTION = "description";
-    private static final String COLUMN_NOTE_COLOR = "color";
+//    private static final String TABLE_MY_NOTE = "my_notes";
+//    private static final String COLUMN_LIST_ID = "_id";
+//    private static final String COLUMN_NOTE_TITLE = "title";
+//    private static final String COLUMN_NOTE_DATE_CREATE = "date_created";
+//    private static final String COLUMN_NOTE_DATE_END = "date_end";
+//    private static final String COLUMN_NOTE_DESCRIPTION = "description";
+//    private static final String COLUMN_NOTE_COLOR = "color";
 
-    DBHandler (Context context, SQLiteDatabase.CursorFactory factory){
+    DBHandler(Context context, SQLiteDatabase.CursorFactory factory) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
-        String qCrateNoteTable = "CREATE TABLE " + TABLE_MY_NOTE + "(" +
-                COLUMN_LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_NOTE_TITLE + " TEXT, " +
-                COLUMN_NOTE_DATE_CREATE + " TEXT, " +
-                COLUMN_NOTE_DATE_END + " TEST, " +
-                COLUMN_NOTE_DESCRIPTION + " TEST, " +
-                COLUMN_NOTE_COLOR + " INTEGER" +
-                ");";
+//        String qCrateNoteTable = "CREATE TABLE " + TABLE_MY_NOTE + "(" +
+//                COLUMN_LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+//                COLUMN_NOTE_TITLE + " TEXT, " +
+//                COLUMN_NOTE_DATE_CREATE + " TEXT, " +
+//                COLUMN_NOTE_DATE_END + " TEST, " +
+//                COLUMN_NOTE_DESCRIPTION + " TEST, " +
+//                COLUMN_NOTE_COLOR + " INTEGER" +
+//                ");";
 
-        sqLiteDatabase.execSQL(qCrateNoteTable);
-
-        String qCreateTrashTable = TrashNoteMdl.CREATE_TABLE;
-
-        sqLiteDatabase.execSQL(qCreateTrashTable);
+        sqLiteDatabase.execSQL(NoteMdl.CREATE_TABLE);
+        sqLiteDatabase.execSQL(TrashNoteMdl.CREATE_TABLE);
     }
 
     /**
@@ -58,7 +56,7 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
 
-        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_MY_NOTE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + NoteMdl.TABLE_NAME);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TrashNoteMdl.TABLE_NAME);
 
         onCreate(sqLiteDatabase);
@@ -70,43 +68,45 @@ public class DBHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_NOTE_TITLE, title);
-        values.put(COLUMN_NOTE_DATE_CREATE, dateCreated);
-        values.put(COLUMN_NOTE_DATE_END, dateEnd);
-        values.put(COLUMN_NOTE_DESCRIPTION, description);
-        values.put(COLUMN_NOTE_COLOR, color);
+        values.put(NoteMdl.COLUMN_NOTE_TITLE, title);
+        values.put(NoteMdl.COLUMN_NOTE_DATE_CREATE, dateCreated);
+        values.put(NoteMdl.COLUMN_NOTE_DATE_END, dateEnd);
+        values.put(NoteMdl.COLUMN_NOTE_DESCRIPTION, description);
+        values.put(NoteMdl.COLUMN_NOTE_COLOR, color);
 
-        db.insert(TABLE_MY_NOTE,null,values);
+        db.insert(NoteMdl.TABLE_NAME, null, values);
         db.close();
     }
 
-    Cursor getMyNote(){
+    Cursor getMyNote() {
         SQLiteDatabase db = getWritableDatabase();
 
-        return db.rawQuery("SELECT * FROM "+ TABLE_MY_NOTE, null);
+        return db.rawQuery("SELECT * FROM " + NoteMdl.TABLE_NAME, null);
     }
 
-    SparseIntArray positionId() {
-        SparseIntArray pi = new SparseIntArray();
-        SQLiteDatabase db = getReadableDatabase();
-        String selectQuery = "SELECT * FROM " + TABLE_MY_NOTE;
-        int pos = 0;
+//    // TODO: delete
+//    SparseIntArray positionId() {
+//        SparseIntArray pi = new SparseIntArray();
+//        SQLiteDatabase db = getReadableDatabase();
+//        String selectQuery = "SELECT * FROM " + NoteMdl.TABLE_NAME;
+//        int pos = 0;
+//
+//        Cursor cursor = db.rawQuery(selectQuery, null);
+//
+//        if (cursor.moveToFirst()) {
+//            do {
+//                pi.put(pos, cursor.getInt(0));
+//                ++pos;
+//            } while (cursor.moveToNext());
+//        }
+//
+//        cursor.close();
+//        db.close();
+//
+//        return pi;
+//    }
 
-        Cursor cursor = db.rawQuery(selectQuery, null);
-
-        if (cursor.moveToFirst()) {
-            do {
-                pi.put(pos, cursor.getInt(0));
-                ++pos;
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-        db.close();
-
-        return pi;
-    }
-
+    // TODO: include new fields
     List<TrashNoteMdl> getTrash() {
         List<TrashNoteMdl> trashList = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
@@ -142,7 +142,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      * This method fetches the specified attribute form the notes table that matches the id
-     * @param id id of the note
+     *
+     * @param id        id of the note
      * @param attribute column to fetch data from
      * @return String representation of the data in the specified column
      */
@@ -153,7 +154,8 @@ public class DBHandler extends SQLiteOpenHelper {
         String dbString;
 
         // select statement for the specific id
-        String query = "SELECT * FROM " + TABLE_MY_NOTE + " WHERE " + COLUMN_LIST_ID + " = " + id;
+        String query = "SELECT * FROM " + NoteMdl.TABLE_NAME + " WHERE " + NoteMdl.COLUMN_LIST_ID +
+                " = " + id;
 
         // execute statement
         Cursor cursor = db.rawQuery(query, null);
@@ -178,16 +180,26 @@ public class DBHandler extends SQLiteOpenHelper {
     void deleteNote(int id) {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.delete(TrashNoteMdl.TABLE_NAME, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+        db.delete(TrashNoteMdl.TABLE_NAME, NoteMdl.COLUMN_LIST_ID + " = ?",
+                new String[]{String.valueOf(id)});
 
         db.close();
     }
 
+    // TODO: update for new fields
     void trashNote(int id) {
         SQLiteDatabase db = getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT title, date_created, date_end, description, " +
-                "color FROM my_notes WHERE _id = " + id, null);
+        @SuppressLint("DefaultLocale")
+        String query = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s = %d",
+                NoteMdl.COLUMN_NOTE_TITLE, NoteMdl.COLUMN_NOTE_DATE_CREATE, NoteMdl.COLUMN_NOTE_DATE_END,
+                NoteMdl.COLUMN_NOTE_DESCRIPTION, NoteMdl.COLUMN_NOTE_COLOR, NoteMdl.COLUMN_NOTE_STAMP_CREATE,
+                NoteMdl.COLUMN_NOTE_STAMP_EDIT, NoteMdl.TABLE_NAME, NoteMdl.COLUMN_LIST_ID, id);
+
+//        Cursor cursor = db.rawQuery("SELECT title, date_created, date_end, description, " +
+//                "color FROM my_notes WHERE _id = " + id, null);
+
+        Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
 
@@ -198,19 +210,31 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(TrashNoteMdl.COLUMN_NOTE_DATE_END, cursor.getString(2));
         values.put(TrashNoteMdl.COLUMN_NOTE_DESCRIPTION, cursor.getString(3));
         values.put(TrashNoteMdl.COLUMN_NOTE_COLOR, cursor.getInt(4));
+        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_CREATE, cursor.getInt(5));
+        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_EDIT, cursor.getInt(6));
 
         db.insert(TrashNoteMdl.TABLE_NAME, null, values);
-        db.delete(TABLE_MY_NOTE, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+        db.delete(NoteMdl.TABLE_NAME, NoteMdl.COLUMN_LIST_ID + " = ?",
+                new String[]{String.valueOf(id)});
 
         cursor.close();
         db.close();
     }
 
+    // TODO: update for new fields
     void restoreNote(int id) {
         SQLiteDatabase db = getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT title, date_created, date_end, description, " +
-                "color FROM " + TrashNoteMdl.TABLE_NAME + " WHERE _id = " + id, null);
+        @SuppressLint("DefaultLocale")
+        String query = String.format("SELECT %s, %s, %s, %s, %s, %s, %s FROM %s WHERE %s = %d",
+                NoteMdl.COLUMN_NOTE_TITLE, NoteMdl.COLUMN_NOTE_DATE_CREATE, NoteMdl.COLUMN_NOTE_DATE_END,
+                NoteMdl.COLUMN_NOTE_DESCRIPTION, NoteMdl.COLUMN_NOTE_COLOR, NoteMdl.COLUMN_NOTE_STAMP_CREATE,
+                NoteMdl.COLUMN_NOTE_STAMP_EDIT, NoteMdl.TABLE_NAME, NoteMdl.COLUMN_LIST_ID, id);
+
+//        Cursor cursor = db.rawQuery("SELECT title, date_created, date_end, description, " +
+//                "color FROM my_notes WHERE _id = " + id, null);
+
+        Cursor cursor = db.rawQuery(query, null);
 
         cursor.moveToFirst();
 
@@ -221,9 +245,12 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(TrashNoteMdl.COLUMN_NOTE_DATE_END, cursor.getString(2));
         values.put(TrashNoteMdl.COLUMN_NOTE_DESCRIPTION, cursor.getString(3));
         values.put(TrashNoteMdl.COLUMN_NOTE_COLOR, cursor.getInt(4));
+        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_CREATE, cursor.getInt(5));
+        values.put(TrashNoteMdl.COLUMN_NOTE_STAMP_EDIT, cursor.getInt(6));
 
-        db.insert(TABLE_MY_NOTE, null, values);
-        db.delete(TrashNoteMdl.TABLE_NAME, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+        db.insert(NoteMdl.TABLE_NAME, null, values);
+        db.delete(TrashNoteMdl.TABLE_NAME, TrashNoteMdl.COLUMN_LIST_ID + " = ?",
+                new String[]{String.valueOf(id)});
 
         cursor.close();
         db.close();
@@ -231,23 +258,28 @@ public class DBHandler extends SQLiteOpenHelper {
 
     /**
      * Updates the column values for specific id
-     * @param id id of note to edit
-     * @param title replaces the old title
+     *
+     * @param id          id of note to edit
+     * @param title       replaces the old title
      * @param dateCreated replaces the old create date
-     * @param dateEnd replaced the old end date if added
+     * @param dateEnd     replaced the old end date if added
      * @param description replaces the old description
      */
     void updateNote(int id, String title, String dateCreated, String dateEnd, String description) {
         SQLiteDatabase db = getWritableDatabase();
+        String dateNow = "UPDATE " + NoteMdl.TABLE_NAME + " SET " + NoteMdl.COLUMN_NOTE_STAMP_EDIT +
+                " = datetime('now', 'localtime') WHERE _id = " + id;
 
+        db.execSQL(dateNow);
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_NOTE_TITLE, title);
-        values.put(COLUMN_NOTE_DATE_CREATE, dateCreated);
-        values.put(COLUMN_NOTE_DATE_END, dateEnd);
-        values.put(COLUMN_NOTE_DESCRIPTION, description);
+        values.put(NoteMdl.COLUMN_NOTE_TITLE, title);
+        values.put(NoteMdl.COLUMN_NOTE_DATE_CREATE, dateCreated);
+        values.put(NoteMdl.COLUMN_NOTE_DATE_END, dateEnd);
+        values.put(NoteMdl.COLUMN_NOTE_DESCRIPTION, description);
 
-        db.update(TABLE_MY_NOTE, values, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+        db.update(NoteMdl.TABLE_NAME, values, NoteMdl.COLUMN_LIST_ID + " = ?",
+                new String[]{String.valueOf(id)});
 
         db.close();
     }
