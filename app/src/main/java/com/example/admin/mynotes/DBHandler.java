@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.SparseIntArray;
 
 import com.example.admin.mynotes.model.TrashNoteMdl;
 
@@ -47,6 +48,23 @@ public class DBHandler extends SQLiteOpenHelper {
         String qCreateTrashTable = TrashNoteMdl.CREATE_TABLE;
 
         sqLiteDatabase.execSQL(qCreateTrashTable);
+
+    }
+    SparseIntArray positionId() {
+        SparseIntArray pi = new SparseIntArray();
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_MY_NOTE;
+        int pos = 0;
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor.moveToFirst()) {
+            do {
+                pi.put(pos, cursor.getInt(0));
+                ++pos;
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return pi;
     }
 
     /**
@@ -230,6 +248,39 @@ public class DBHandler extends SQLiteOpenHelper {
         db.update(TABLE_MY_NOTE, values, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
 
         db.close();
+    }
+
+    List<TrashNoteMdl> getNote2() {
+        List<TrashNoteMdl> trashList = new ArrayList<>();
+        SQLiteDatabase db = getWritableDatabase();
+        String selectQuery = "SELECT  * FROM " + TrashNoteMdl.TABLE_NAME;
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                TrashNoteMdl trash = new TrashNoteMdl();
+                trash.set_id(cursor.getInt(cursor.getColumnIndex(TrashNoteMdl.COLUMN_LIST_ID)));
+                trash.setColor(cursor.getInt(cursor.getColumnIndex(
+                        TrashNoteMdl.COLUMN_NOTE_COLOR)));
+                trash.setDate_created(cursor.getString(cursor.getColumnIndex(
+                        TrashNoteMdl.COLUMN_NOTE_DATE_CREATE)));
+                trash.setDate_end(cursor.getString(cursor.getColumnIndex(
+                        TrashNoteMdl.COLUMN_NOTE_DATE_END)));
+                trash.setDescription(cursor.getString(cursor.getColumnIndex(
+                        TrashNoteMdl.COLUMN_NOTE_DESCRIPTION)));
+                trash.setTitle(cursor.getString(cursor.getColumnIndex(
+                        TrashNoteMdl.COLUMN_NOTE_TITLE)));
+
+                trashList.add(trash);
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+        db.close();
+
+        return trashList;
     }
 
 }

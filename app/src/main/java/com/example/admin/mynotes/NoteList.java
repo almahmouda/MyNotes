@@ -9,6 +9,10 @@ import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.admin.mynotes.model.TrashNoteMdl;
+
+import java.util.List;
+
 public class NoteList extends CursorAdapter {
     /**
      * initialize NoteList CursorAdapter
@@ -16,7 +20,14 @@ public class NoteList extends CursorAdapter {
     NoteList(Context context, Cursor cursor, int flags){
         super(context, cursor, flags);
     }
-
+//    NoteList(Context context, List<TrashNoteMdl> notes){
+//        this.inflater = LayoutInflater.from(context);
+//        this.notes = notes;
+////        (context, notes, flags);
+//    }
+//
+//    private List <TrashNoteMdl> notes ;
+//    private LayoutInflater inflater;
     /**
      * view to hold the data in the cursor
      */
