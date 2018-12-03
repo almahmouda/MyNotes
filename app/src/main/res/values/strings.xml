@@ -32,6 +32,7 @@
     <string name="action_sort">Sort</string>
     <string name="note_goes_here">Note goes here</string>
     <string name="action_perma_delete_t">Permanently Delete</string>
+    <string name="action_restore_t">Restore</string>
     <string-array name="sort_label">
         <item>Sort By:</item>
         <item>Default</item>

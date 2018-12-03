@@ -6,9 +6,16 @@
 
     <item
         android:id="@+id/action_perma_delete_t"
-        android:icon="@drawable/ic_delete_light"
-        android:orderInCategory="100"
+        android:icon="@drawable/ic_delete_dark"
+        android:orderInCategory="200"
         android:title="@string/action_perma_delete_t"
+        app:showAsAction="always"
+        tools:ignore="AlwaysShowAction" />
+    <item
+        android:id="@+id/action_restore_t"
+        android:icon="@drawable/ic_restore"
+        android:orderInCategory="100"
+        android:title="@string/action_restore_t"
         app:showAsAction="always" />
 
 </menu>
