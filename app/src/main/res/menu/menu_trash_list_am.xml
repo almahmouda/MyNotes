@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".TrashListActivity">
+
+    <item
+        android:id="@+id/action_perma_delete_t"
+        android:icon="@drawable/ic_delete_light"
+        android:orderInCategory="100"
+        android:title="@string/action_perma_delete_t"
+        app:showAsAction="always" />
+
+</menu>

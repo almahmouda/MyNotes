@@ -30,13 +30,18 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
         if (child != null && listener != null && detector.onTouchEvent(motionEvent)) {
             listener.onClick(child, recyclerView.getChildAdapterPosition(child));
         }
+//        View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
+//        if (child != null && listener != null && detector.onTouchEvent(motionEvent)) {
+//            if(child==child.findViewById(R.id.icon_layout)){
+//                listener.onClick(child, recyclerView.getChildAdapterPosition(child));
+//            }
+//        }
 
         return false;
     }
 
     @Override
     public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
-
     }
 
     @Override

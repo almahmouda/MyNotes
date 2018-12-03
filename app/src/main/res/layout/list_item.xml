@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_item_note"
@@ -7,57 +7,114 @@
     android:layout_height="wrap_content"
     android:paddingLeft="8dp"
     android:paddingTop="7dp"
+    android:baselineAligned="false"
     android:paddingRight="8dp">
 
-    <ImageView
-        android:id="@+id/letter_plate_t"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/letter_plate"
-        tools:ignore="ContentDescription" />
+    <FrameLayout
+        android:id="@+id/icon_layout"
+        android:layout_width="45dp"
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
-    <TextView
-        android:id="@+id/title_initial_t"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/label_initial"
-        android:textColor="@android:color/background_light"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:fontFamily="casual"
-        app:layout_constraintBottom_toBottomOf="@+id/letter_plate_t"
-        app:layout_constraintEnd_toEndOf="@+id/letter_plate_t"
-        app:layout_constraintStart_toStartOf="@+id/letter_plate_t"
-        app:layout_constraintTop_toTopOf="@+id/letter_plate_t" />
+        <ImageView
+            android:id="@+id/letter_plate_t"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@drawable/letter_plate"
+            tools:ignore="ContentDescription"
+            tools:layout_editor_absoluteX="16dp"
+            tools:layout_editor_absoluteY="82dp" />
 
-    <TextView
-        android:id="@+id/title_t"
-        android:layout_width="0dp"
+        <TextView
+            android:id="@+id/title_initial_t"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:gravity="center"
+            android:text="@string/label_initial"
+            android:textColor="@android:color/background_light"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:fontFamily="casual"
+            app:layout_constrainedWidth="true"
+            tools:layout_editor_absoluteX="28dp"
+            tools:layout_editor_absoluteY="81dp" />
+
+        <ImageView
+            android:id="@+id/item_row_select"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/selected_row"
+            tools:ignore="ContentDescription" />
+    </FrameLayout>
+
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/info_layout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:text="@string/labelTitle"
-        android:textSize="24sp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/title_initial_t"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/letter_plate_t" />
+        tools:ignore="RtlHardcoded">
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="0dp"
-        android:layout_height="1dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/letter_plate_t"
-        app:layout_constraintTop_toBottomOf="@+id/title_t" />
+        <TextView
+            android:id="@+id/title_t"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="3"
+            android:text="@string/labelTitle"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/start_date_t"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/label_created"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_t"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:id="@+id/start_date_here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/createDateHere"
+            android:textSize="12sp"
+            android:textStyle="italic"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_date_t" />
+
+        <TextView
+            android:id="@+id/short_descript_t"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@string/note_goes_here"
+            app:layout_constraintEnd_toStartOf="@+id/start_date_here"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title_t" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:background="?android:attr/listDivider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/start_date_here" />
+
+    </android.support.constraint.ConstraintLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

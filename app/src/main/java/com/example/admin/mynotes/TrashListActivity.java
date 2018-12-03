@@ -3,7 +3,9 @@ package com.example.admin.mynotes;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -16,18 +18,19 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.admin.mynotes.model.TrashNoteMdl;
-import com.example.admin.mynotes.util.RecyclerTouchListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class TrashListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+//import android.view.ActionMode;
+
+public class TrashListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
+        TrashListAdapter.ItemClickListener {
 
     private static final int RESTORE = -1;
     private static final int PERMANENT_DELETE = 1;
     private static final int VIEW_CODE = 2;
-    private static final int UPBUTTON = 0;
 
     Intent intent;
     DBHandler dbHandler;
@@ -35,7 +38,9 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
     RecyclerView trashReView;
     TrashListAdapter listAdapter;
     Spinner spinner;
-    boolean test = false;
+    boolean showHideSort = false;
+    ActionMode actionMode;
+    ActionModeCallback actionModeCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +59,21 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
 
         trashNotes.addAll(dbHandler.getTrash());
 
-        listAdapter = new TrashListAdapter(this, trashNotes);
+        listAdapter = new TrashListAdapter(this, trashNotes, this);
 
         trashReView.setLayoutManager(new LinearLayoutManager(this));
         trashReView.setAdapter(listAdapter);
 
-        trashReView.addOnItemTouchListener(new RecyclerTouchListener(this, trashReView, new RecyclerTouchListener.MyClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                TrashNoteMdl trashNote = trashNotes.get(position);
-                viewTrashNote(trashNote, position);
-//                Toast.makeText(TrashListActivity.this, "onClick works.", Toast.LENGTH_SHORT).show();
-            }
-        }));
+//        trashReView.addOnItemTouchListener(new RecyclerTouchListener(this, trashReView,
+//                new RecyclerTouchListener.MyClickListener() {
+//            @Override
+//            public void onClick(View view, int position) {
+////                TrashNoteMdl trashNote = trashNotes.get(position);
+////                viewTrashNote(trashNote, position);
+//                Snackbar.make(view, "onClick works, position: " + position, Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        }));
 
         spinner = findViewById(R.id.trash_sort_spinner_bar);
         spinner.setOnItemSelectedListener(this);
@@ -78,6 +85,8 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
 
         spinner.setAdapter(adapter);
         spinner.setVisibility(View.GONE);
+
+        actionModeCallback = new ActionModeCallback();
     }
 
     public void viewTrashNote(TrashNoteMdl note, int position) {
@@ -96,9 +105,6 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
                 position = data.getIntExtra("position", 0);
                 trashNotes.remove(position);
                 listAdapter.notifyItemRemoved(position);
-            }
-            if (resultCode == UPBUTTON) {
-                listAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -171,14 +177,91 @@ public class TrashListActivity extends AppCompatActivity implements AdapterView.
 
     public void showSort(MenuItem item) {
 
-        if (!test) {
+        if (!showHideSort) {
             spinner.setVisibility(View.VISIBLE);
-            test = !test;
+            showHideSort = !showHideSort;
         } else {
             spinner.setVisibility(View.GONE);
-            test = !test;
+            showHideSort = !showHideSort;
+        }
+    }
+
+    @Override
+    public void viewInfo(View view, int position) {
+        Snackbar.make(view, "onClick works, INFO position: " + position, Snackbar.LENGTH_LONG)
+                .setAction("Action", null).show();
+    }
+
+    @Override
+    public void itemSelect(int position) {
+        if (actionMode == null) {
+            actionMode = startSupportActionMode(actionModeCallback);
         }
 
+        toggleSelection(position);
+    }
 
+    private void enableActionMode(int position) {
+        if (actionMode == null) {
+            actionMode = startSupportActionMode(actionModeCallback);
+        }
+        toggleSelection(position);
+    }
+
+    private void toggleSelection(int position) {
+        listAdapter.toggleSelection(position);
+        int count = listAdapter.selectCount();
+
+        if (count == 0) {
+            actionMode.finish();
+        } else {
+            actionMode.setTitle(String.valueOf(count));
+            actionMode.invalidate();
+        }
+    }
+
+    private class ActionModeCallback implements ActionMode.Callback {
+        @Override
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_trash_list_am, menu);
+
+            // disable swipe refresh if action mode is enabled
+//            swipeRefreshLayout.setEnabled(false);
+            return true;
+        }
+
+        @Override
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+            return false;
+        }
+
+        @Override
+        public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_perma_delete_t:
+                    // delete all the selected messages
+//                    deleteMessages();
+                    Toast.makeText(TrashListActivity.this, "workiing", Toast.LENGTH_SHORT).show();
+                    mode.finish();
+                    return true;
+
+                default:
+                    return false;
+            }
+        }
+
+        @Override
+        public void onDestroyActionMode(ActionMode mode) {
+            listAdapter.clearSelected();
+//            swipeRefreshLayout.setEnabled(true);
+            actionMode = null;
+//            recyclerView.post(new Runnable() {
+//                @Override
+//                public void run() {
+//                    mAdapter.resetAnimationIndex();
+//                    // mAdapter.notifyDataSetChanged();
+//                }
+//            });
+        }
     }
 }

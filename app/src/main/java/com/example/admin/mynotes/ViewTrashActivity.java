@@ -15,7 +15,6 @@ public class ViewTrashActivity extends AppCompatActivity {
 
     private static final int RESTORE = -1;
     private static final int PERMANENT_DELETE = 1;
-    private static final int UPBUTTON = 0;
 
     Intent intent;
     Bundle bundle;
@@ -86,7 +85,6 @@ public class ViewTrashActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-//                setResult(UPBUTTON);
                 finish();
                 return true;
             default:

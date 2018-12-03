@@ -91,8 +91,13 @@ public class EditNote extends AppCompatActivity implements DatePickerFragment.On
         // Bind data from the database to the corresponding EditText views to be edited
         edit_title.setText(dbHandler.getNoteAttribute((int) id, "title"));
         edit_create_date.setText(dbHandler.getNoteAttribute((int) id, "date_created"));
-        edit_end_date.setText(dbHandler.getNoteAttribute((int) id, "date_end"));
         edit_note.setText(dbHandler.getNoteAttribute((int) id, "description"));
+        String eDate = dbHandler.getNoteAttribute((int) id, "date_end");
+        if (!eDate.equals("None")) {
+            edit_end_date.setText(eDate);
+        } else {
+            edit_end_date.setText("");
+        }
 
         // register an OnClickListener to the date EditText
         edit_create_date.setOnClickListener(new View.OnClickListener() {
