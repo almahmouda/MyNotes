@@ -11,8 +11,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"
             android:label="@string/app_name"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,9 +22,9 @@
         </activity>
         <activity
             android:name=".CreateNote"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_create_note"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -32,9 +32,9 @@
         </activity>
         <activity
             android:name=".ViewNote"
-            android:screenOrientation="portrait"
             android:label="@string/title_activity_view_note"
             android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -49,6 +49,24 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.admin.mynotes.ViewNote" />
+        </activity>
+        <activity
+            android:name=".TrashListActivity"
+            android:label="@string/title_activity_trash_note"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.admin.mynotes.MainActivity" />
+        </activity>
+        <activity
+            android:name=".ViewTrashActivity"
+            android:label="@string/title_activity_view_trash"
+            android:parentActivityName=".TrashListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.admin.mynotes.TrashListActivity" />
         </activity>
     </application>
 
