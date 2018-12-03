@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,6 +19,10 @@ import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
+import com.example.admin.mynotes.model.TrashNoteMdl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,11 +34,13 @@ public class MainActivity extends AppCompatActivity {
 
     DBHandler dbHandler;
 
+    List<TrashNoteMdl> notes = new ArrayList<>();
+
     NoteList noteListAdapter;
 
+    SparseIntArray sparseIntArray;
 
 
-    //ListView noteListView;
 
 
     @Override
@@ -43,14 +51,16 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         dbHandler = new DBHandler(this, null);
-//
+
         mListView = findViewById(R.id.note_list_view);
 
         noteListAdapter = new NoteList(this, dbHandler.getMyNote(), 0);
 
         mListView.setAdapter(noteListAdapter);
-        int anInt;
 
+//        sparseIntArray = dbHandler.positionId();
+
+//        notes.addAll(dbHandler.getNote2());
 
         // OnItemClickListener for the noteListView
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -63,8 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 // put the note id of teh clicked in the intent
                 intent.putExtra("_id", id);
                 startActivity(intent);
-
-
+                //getId(position);
 
             }
 //            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
@@ -107,12 +116,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void initControl () {
+    private void initControl() {
 
 
-
-
-        SwipeMenuCreator creator = new SwipeMenuCreator() {
+        final SwipeMenuCreator creator = new SwipeMenuCreator() {
 
             @Override
             public void create(SwipeMenu menu) {
@@ -120,16 +127,10 @@ public class MainActivity extends AppCompatActivity {
                 switch (menu.getViewType()) {
                     case 1:
                         break;
-//                    case 1:
-//                        // create menu of type 1
-//                        break;
-
                 }
-                // Left
-                //mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
 
-                //noteListView = (SwipeMenuListView) findViewById(R.id.note_list_view);
-                ((SwipeMenuListView)mListView).setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
+                // these following lines are responsible for the color and icon for swipe to delete
+                mListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
                 // create "delete" item
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getApplicationContext());
@@ -146,30 +147,24 @@ public class MainActivity extends AppCompatActivity {
 
         };
         // set creator
-
         mListView.setMenuCreator(creator);
 
         mListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
 
             @Override
-            public boolean onMenuItemClick(int item, SwipeMenu menu, int index) {
-
-
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
+                        int i = sparseIntArray.get(position);
+                        dbHandler.trashNote(i);
+                        Log.d(TAG, "delete test!!!2");
+                        sparseIntArray.delete(position);
 
-                        //dbHandler.deleteNote(id);
-                        break;
-                    case 1:
-                        Log.d(TAG, "delete test!!!");
+                        dbHandler.getMyNote();
+                        noteListAdapter.notifyDataSetChanged();
+                        finish();
+                        startActivity(getIntent());
 
-                        break;
-//                    case 1:
-//                        mArrayList.remove(position);
-//                        mListDataAdapter.notifyDataSetChanged();
-//                        Toast.makeText(MainActivity.this,"Item deleted",Toast.LENGTH_SHORT).show();
-//
-//                        break;
                 }
                 return true;
             }
@@ -178,8 +173,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void createNote(View view) {
         intent = new Intent(this, CreateNote.class);
-        startActivity(intent);
+        startActivityForResult(intent, 3);
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == 3) {
+            if (resultCode == 1) {
+                noteListAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
@@ -202,20 +207,5 @@ public class MainActivity extends AppCompatActivity {
         noteListAdapter = new NoteList(this, dbHandler.getMyNote(), 0);
         mListView.setAdapter(noteListAdapter);
     }
-//    public void getId (long i){
-//        int putId= (int)i;
-//        dbHandler.deleteNote(putId);
-//
-//    }
-//    public void delete(){
-//
-////        dbHandler.deleteNote();
-//
-//    }
-//    protected int setId(long idd){
-//        int iddd= (int) idd;
-//        return iddd;
-//    }
-//    public void delete() {
 
 }
