@@ -1,8 +1,6 @@
 package com.example.admin.mynotes;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -10,14 +8,12 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.SparseArray;
 import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
@@ -32,12 +28,13 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
 
+    // declare the SwipeMenueListView to use Baoyz library
     SwipeMenuListView mListView;
 
     Intent intent;
 
     DBHandler dbHandler;
-
+    // declare a List's object for the TrashNoteMdl to give access to trashNoteMdl once an item is deleted
     List <TrashNoteMdl> notes = new ArrayList<>();
 
     NoteList noteListAdapter;
@@ -77,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
                 // put the note id of teh clicked in the intent
                 intent.putExtra("_id", id);
                 startActivity(intent);
-                //getId(position);
-
             }
 //            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
 //                switch (index) {
@@ -165,16 +160,18 @@ public class MainActivity extends AppCompatActivity {
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
+                        // put the position of the swiped note into sparseIntArray (i)
                         int i = sparseIntArray.get(position);
+                        // call the dbHandler passing the position of the swiped note to delete
+                        // through trashNote()
                         dbHandler.trashNote(i);
-                        Log.d(TAG, "delete test!!!2");
                         sparseIntArray.delete(position);
-
+                        // refreshing the mainActivitie's list of notes
                         dbHandler.getMyNote();
                         noteListAdapter.notifyDataSetChanged();
+                        // force refresh
                         finish();
                         startActivity(getIntent());
-
                 }
                 return true;
             }
@@ -186,20 +183,23 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 3);
     }
 
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        finish();
+        startActivity(getIntent());
         if (requestCode == 3) {
             if (resultCode == 1) {
                 noteListAdapter.notifyDataSetChanged();
             }
         }
-    }
 
+    }
+// method to convert the icon from dp to pixels to fitment the swipe
     private int dp2px(int dp) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
                 getResources().getDisplayMetrics());
     }
-
 
     public void viewTrash() {
         intent = new Intent(this, TrashListActivity.class);

@@ -89,16 +89,13 @@ public class ViewNote extends AppCompatActivity {
     }
 
     public void editNote(View view) {
-//        Toast.makeText(this, "Edit Test OK.", Toast.LENGTH_LONG).show();
         intent = new Intent(this, EditNote.class);
         intent.putExtra("_id", id);
         startActivityForResult(intent, 1);
-//        startActivity(intent);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1) {
             if (resultCode == Activity.RESULT_OK) {
                 setViewFields((int) id);
@@ -109,11 +106,4 @@ public class ViewNote extends AppCompatActivity {
             }
         }
     }
-
-//    @Override
-//    protected void onRestart() {
-//        super.onRestart();
-////        this.recreate();
-//        setViewFields((int) id);
-//    }
 }
