@@ -32,10 +32,8 @@ public class TrashListAdapter extends RecyclerView.Adapter<TrashListAdapter.Item
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        TrashNoteMdl note = trashNotes.get(position);
-        holder.title.setText(note.title);
-        holder.title_initial.setText(note.title.substring(0, 1));
-        holder.letter_plate.setColorFilter(note.color);
+        holder.bind_to(trashNotes.get(position));
+
     }
 
     @Override
@@ -55,5 +53,12 @@ public class TrashListAdapter extends RecyclerView.Adapter<TrashListAdapter.Item
             title_initial = itemView.findViewById(R.id.title_initial_t);
             letter_plate = itemView.findViewById(R.id.letter_plate_t);
         }
+
+        void bind_to(TrashNoteMdl note){
+            title.setText(note.title);
+            title_initial.setText(note.title.substring(0, 1));
+            letter_plate.setColorFilter(note.color);
+        }
+
     }
 }
