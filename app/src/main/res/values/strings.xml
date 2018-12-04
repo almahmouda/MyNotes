@@ -28,8 +28,8 @@
     <string name="action_save_changes">Save</string>
     <string name="title_activity_trash_note">Trash</string>
     <string name="trash_can">Trash Can</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_view_trash">ViewTrashActivity</string>
+    <string name="delete_forever">Delete All</string>
+    <string name="action_delete">Delete Forever</string>
 </resources>
