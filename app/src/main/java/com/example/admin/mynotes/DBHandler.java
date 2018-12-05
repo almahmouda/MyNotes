@@ -12,19 +12,24 @@ import com.example.admin.mynotes.model.TrashNoteMdl;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.admin.mynotes.model.TrashNoteMdl.COLUMN_NOTE_TITLE;
+
 public class DBHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private static final String DATABASE_NAME = "myNote.db";
 
     private static final String TABLE_MY_NOTE = "my_notes";
-    private static final String COLUMN_LIST_ID ="_id";
-    private static final String COLUMN_NOTE_TITLE = "title";
-    private static final String COLUMN_NOTE_DATE_CREATE = "date_created";
-    private static final String COLUMN_NOTE_DATE_END = "date_end";
-    private static final String COLUMN_NOTE_DESCRIPTION = "description";
-    private static final String COLUMN_NOTE_COLOR = "color";
-//    private static final String TABLE_NAME = "trash";
+
+    // Common column names
+    private static final String ID = TrashNoteMdl.COLUMN_LIST_ID;
+    private static final String TITLE = COLUMN_NOTE_TITLE;
+    private static final String DATE_CREATE = TrashNoteMdl.COLUMN_NOTE_DATE_CREATE;
+    private static final String DATE_END = TrashNoteMdl.COLUMN_NOTE_DATE_END;
+    private static final String DESCRIPTION = TrashNoteMdl.COLUMN_NOTE_DESCRIPTION;
+    private static final String COLOR = TrashNoteMdl.COLUMN_NOTE_COLOR;
+    private static final String TIMESTAMP_CREATE= TrashNoteMdl.COLUMN_NOTE_STAMP_CREATE;
+    private static final String TIMESTAMP_EDIT = TrashNoteMdl.COLUMN_NOTE_STAMP_EDIT;
 
 
     DBHandler (Context context, SQLiteDatabase.CursorFactory factory){
@@ -35,21 +40,20 @@ public class DBHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
 
         String qCrateNoteTable = "CREATE TABLE " + TABLE_MY_NOTE + "(" +
-                COLUMN_LIST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COLUMN_NOTE_TITLE + " TEXT, " +
-                COLUMN_NOTE_DATE_CREATE + " TEXT, " +
-                COLUMN_NOTE_DATE_END + " TEST, " +
-                COLUMN_NOTE_DESCRIPTION + " TEST, " +
-                COLUMN_NOTE_COLOR + " INTEGER" +
+                ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                TITLE + " TEXT, " +
+                DATE_CREATE + " TEXT, " +
+                DATE_END + " TEST, " +
+                DESCRIPTION + " TEST, " +
+                COLOR + " INTEGER, " +
+                TIMESTAMP_CREATE + " DATETIME DEFAULT (datetime('now', 'localtime')), " +
+                TIMESTAMP_EDIT + " DATETIME DEFAULT (datetime('now', 'localtime'))" +
                 ");";
 
         sqLiteDatabase.execSQL(qCrateNoteTable);
-
-        String qCreateTrashTable = TrashNoteMdl.CREATE_TABLE;
-
-        sqLiteDatabase.execSQL(qCreateTrashTable);
-
+        sqLiteDatabase.execSQL(TrashNoteMdl.CREATE_TABLE);
     }
+
     SparseIntArray positionId() {
         SparseIntArray pi = new SparseIntArray();
         SQLiteDatabase db = getReadableDatabase();
@@ -89,11 +93,11 @@ public class DBHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_NOTE_TITLE, title);
-        values.put(COLUMN_NOTE_DATE_CREATE, dateCreated);
-        values.put(COLUMN_NOTE_DATE_END, dateEnd);
-        values.put(COLUMN_NOTE_DESCRIPTION, description);
-        values.put(COLUMN_NOTE_COLOR, color);
+        values.put(TITLE, title);
+        values.put(DATE_CREATE, dateCreated);
+        values.put(DATE_END, dateEnd);
+        values.put(DESCRIPTION, description);
+        values.put(COLOR, color);
 
         db.insert(TABLE_MY_NOTE,null,values);
         db.close();
@@ -115,17 +119,15 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.moveToFirst()) {
             do {
                 TrashNoteMdl trash = new TrashNoteMdl();
-                trash.set_id(cursor.getInt(cursor.getColumnIndex(TrashNoteMdl.COLUMN_LIST_ID)));
-                trash.setColor(cursor.getInt(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_COLOR)));
-                trash.setDate_created(cursor.getString(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_DATE_CREATE)));
-                trash.setDate_end(cursor.getString(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_DATE_END)));
-                trash.setDescription(cursor.getString(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_DESCRIPTION)));
-                trash.setTitle(cursor.getString(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_TITLE)));
+                trash.set_id(cursor.getInt(0));
+                trash.setTitle(cursor.getString(1));
+                trash.setDate_created(cursor.getString(2));
+                trash.setDate_end(cursor.getString(3));
+                trash.setDescription(cursor.getString(4));
+                trash.setColor(cursor.getInt(5));
+                trash.setTimestamp_create(cursor.getString(6));
+                trash.setTimestamp_edit(cursor.getString(7));
+                trash.setTimestamp_delete(cursor.getString(8));
 
                 trashList.add(trash);
 
@@ -151,7 +153,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String dbString;
 
         // select statement for the specific id
-        String query = "SELECT * FROM " + TABLE_MY_NOTE + " WHERE " + COLUMN_LIST_ID + " = " + id;
+        String query = "SELECT * FROM " + TABLE_MY_NOTE + " WHERE " + ID + " = " + id;
 
         // execute statement
         Cursor cursor = db.rawQuery(query, null);
@@ -176,7 +178,7 @@ public class DBHandler extends SQLiteOpenHelper {
     void deleteNote(int id) {
         SQLiteDatabase db = getWritableDatabase();
 
-        db.delete(TrashNoteMdl.TABLE_NAME, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+        db.delete(TrashNoteMdl.TABLE_NAME, ID + " = ?", new String[]{String.valueOf(id)});
 
         db.close();
     }
@@ -184,21 +186,22 @@ public class DBHandler extends SQLiteOpenHelper {
     void trashNote(int id) {
         SQLiteDatabase db = getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT title, date_created, date_end, description, " +
-                "color FROM my_notes WHERE _id = " + id, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM my_notes WHERE _id = " + id, null);
 
         cursor.moveToFirst();
 
         ContentValues values = new ContentValues();
 
-        values.put(TrashNoteMdl.COLUMN_NOTE_TITLE, cursor.getString(0));
-        values.put(TrashNoteMdl.COLUMN_NOTE_DATE_CREATE, cursor.getString(1));
-        values.put(TrashNoteMdl.COLUMN_NOTE_DATE_END, cursor.getString(2));
-        values.put(TrashNoteMdl.COLUMN_NOTE_DESCRIPTION, cursor.getString(3));
-        values.put(TrashNoteMdl.COLUMN_NOTE_COLOR, cursor.getInt(4));
+        values.put(TITLE, cursor.getString(1));
+        values.put(DATE_CREATE, cursor.getString(2));
+        values.put(DATE_END, cursor.getString(3));
+        values.put(DESCRIPTION, cursor.getString(4));
+        values.put(COLOR, cursor.getInt(5));
+        values.put(TIMESTAMP_CREATE, cursor.getString(6));
+        values.put(TIMESTAMP_EDIT, cursor.getString(7));
 
         db.insert(TrashNoteMdl.TABLE_NAME, null, values);
-        db.delete(TABLE_MY_NOTE, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+        db.delete(TABLE_MY_NOTE, ID + " = ?", new String[]{String.valueOf(id)});
 
         cursor.close();
         db.close();
@@ -207,21 +210,22 @@ public class DBHandler extends SQLiteOpenHelper {
     void restoreNote(int id) {
         SQLiteDatabase db = getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT title, date_created, date_end, description, " +
-                "color FROM " + TrashNoteMdl.TABLE_NAME + " WHERE _id = " + id, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TrashNoteMdl.TABLE_NAME + " WHERE _id = " + id, null);
 
         cursor.moveToFirst();
 
         ContentValues values = new ContentValues();
 
-        values.put(TrashNoteMdl.COLUMN_NOTE_TITLE, cursor.getString(0));
-        values.put(TrashNoteMdl.COLUMN_NOTE_DATE_CREATE, cursor.getString(1));
-        values.put(TrashNoteMdl.COLUMN_NOTE_DATE_END, cursor.getString(2));
-        values.put(TrashNoteMdl.COLUMN_NOTE_DESCRIPTION, cursor.getString(3));
-        values.put(TrashNoteMdl.COLUMN_NOTE_COLOR, cursor.getInt(4));
+        values.put(TITLE, cursor.getString(1));
+        values.put(DATE_CREATE, cursor.getString(2));
+        values.put(DATE_END, cursor.getString(3));
+        values.put(DESCRIPTION, cursor.getString(4));
+        values.put(COLOR, cursor.getInt(5));
+        values.put(TIMESTAMP_CREATE, cursor.getString(6));
+        values.put(TIMESTAMP_EDIT, cursor.getString(7));
 
         db.insert(TABLE_MY_NOTE, null, values);
-        db.delete(TrashNoteMdl.TABLE_NAME, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+        db.delete(TrashNoteMdl.TABLE_NAME, ID + " = ?", new String[]{String.valueOf(id)});
 
         cursor.close();
         db.close();
@@ -238,14 +242,19 @@ public class DBHandler extends SQLiteOpenHelper {
     void updateNote(int id, String title, String dateCreated, String dateEnd, String description) {
         SQLiteDatabase db = getWritableDatabase();
 
+        String dateNow = "UPDATE " + TABLE_MY_NOTE + " SET " + TIMESTAMP_EDIT +
+                " = datetime('now', 'localtime') WHERE _id = " + id;
+
+        db.execSQL(dateNow);
+
         ContentValues values = new ContentValues();
 
-        values.put(COLUMN_NOTE_TITLE, title);
-        values.put(COLUMN_NOTE_DATE_CREATE, dateCreated);
-        values.put(COLUMN_NOTE_DATE_END, dateEnd);
-        values.put(COLUMN_NOTE_DESCRIPTION, description);
+        values.put(TITLE, title);
+        values.put(DATE_CREATE, dateCreated);
+        values.put(DATE_END, dateEnd);
+        values.put(DESCRIPTION, description);
 
-        db.update(TABLE_MY_NOTE, values, COLUMN_LIST_ID + " = ?", new String[]{String.valueOf(id)});
+        db.update(TABLE_MY_NOTE, values, ID + " = ?", new String[]{String.valueOf(id)});
 
         db.close();
     }
@@ -253,24 +262,22 @@ public class DBHandler extends SQLiteOpenHelper {
     List<TrashNoteMdl> getNote2() {
         List<TrashNoteMdl> trashList = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
-        String selectQuery = "SELECT  * FROM " + TrashNoteMdl.TABLE_NAME;
+        String selectQuery = "SELECT * FROM " + TrashNoteMdl.TABLE_NAME;
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         if (cursor.moveToFirst()) {
             do {
                 TrashNoteMdl trash = new TrashNoteMdl();
-                trash.set_id(cursor.getInt(cursor.getColumnIndex(TrashNoteMdl.COLUMN_LIST_ID)));
-                trash.setColor(cursor.getInt(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_COLOR)));
-                trash.setDate_created(cursor.getString(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_DATE_CREATE)));
-                trash.setDate_end(cursor.getString(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_DATE_END)));
-                trash.setDescription(cursor.getString(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_DESCRIPTION)));
-                trash.setTitle(cursor.getString(cursor.getColumnIndex(
-                        TrashNoteMdl.COLUMN_NOTE_TITLE)));
+                trash.set_id(cursor.getInt(0));
+                trash.setTitle(cursor.getString(1));
+                trash.setDate_created(cursor.getString(2));
+                trash.setDate_end(cursor.getString(3));
+                trash.setDescription(cursor.getString(4));
+                trash.setColor(cursor.getInt(5));
+                trash.setTimestamp_create(cursor.getString(6));
+                trash.setTimestamp_edit(cursor.getString(7));
+//                trash.setTimestamp_delete(cursor.getString(8));
 
                 trashList.add(trash);
 
