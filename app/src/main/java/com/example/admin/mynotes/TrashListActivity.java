@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.admin.mynotes.model.TrashNoteMdl;
@@ -33,6 +34,7 @@ public class TrashListActivity extends AppCompatActivity implements TrashListAda
     TrashListAdapter listAdapter;
     ActionMode actionMode;
     ActionModeCallback actionModeCallback;
+    Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,30 +148,30 @@ public class TrashListActivity extends AppCompatActivity implements TrashListAda
 
     private class ActionModeCallback implements ActionMode.Callback{
         @Override
-        public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-            actionMode.getMenuInflater().inflate(R.menu.menu_trash_list_am, menu);
+        public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+            mode.getMenuInflater().inflate(R.menu.menu_trash_list_am, menu);
 
             return true;
         }
 
         @Override
-        public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+        public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
             return false;
         }
 
         @Override
-        public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+        public boolean onActionItemClicked(ActionMode mode, MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.action_delete:
                     // delete all the selected messages
                     deleteNotes(listAdapter.getSelectedItems());
-                    actionMode.finish();
+                    mode.finish();
                     return true;
 
                 case R.id.action_restore:
                     // delete all the selected messages
                     restoreNotes(listAdapter.getSelectedItems());
-                    actionMode.finish();
+                    mode.finish();
                     return true;
                 default:
                     return false;
@@ -201,7 +203,7 @@ public class TrashListActivity extends AppCompatActivity implements TrashListAda
         }
 
         @Override
-        public void onDestroyActionMode(ActionMode actionMode) {
+        public void onDestroyActionMode(ActionMode mode) {
             listAdapter.clearSelections();
             actionMode = null;
         }

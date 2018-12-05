@@ -69,9 +69,9 @@ public class TrashListAdapter extends RecyclerView.Adapter<TrashListAdapter.Item
 
     private void applyCheckIcon(ItemViewHolder holder, int position) {
         if (selectedItems.get(position, false)) {
-            holder.check_icon.setVisibility(View.INVISIBLE);
-        } else {
             holder.check_icon.setVisibility(View.VISIBLE);
+        } else {
+            holder.check_icon.setVisibility(View.INVISIBLE);
         }
     }
 
