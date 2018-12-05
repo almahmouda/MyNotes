@@ -73,7 +73,7 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
 
     }
 
-    public TrashNoteMdl(Parcel in) {
+    private TrashNoteMdl(Parcel in) {
         _id = in.readInt();
         title = in.readString();
         date_created = in.readString();
@@ -222,7 +222,7 @@ public class TrashNoteMdl implements Parcelable, Comparable<TrashNoteMdl> {
         public static Comparator<TrashNoteMdl> ALPHA = new Comparator<TrashNoteMdl>() {
             @Override
             public int compare(TrashNoteMdl o1, TrashNoteMdl o2) {
-                return o2.title.compareTo(o1.title);
+                return o1.title.compareTo(o2.title);
             }
         };
         public static Comparator<TrashNoteMdl> RE_CREATE_DATE = new Comparator<TrashNoteMdl>() {

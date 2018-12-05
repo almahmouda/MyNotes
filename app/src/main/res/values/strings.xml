@@ -30,6 +30,13 @@
     <string name="trash_can">Trash Can</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_view_trash">ViewTrashActivity</string>
+    <string name="action_sort">Sort</string>
     <string name="delete_forever">Delete All</string>
     <string name="action_delete">Delete Forever</string>
+    <string-array name="sort_label">
+        <item>Sort By:</item>
+        <item>Recent Created</item>
+        <item>Recent Deleted</item>
+        <item>Alphabetically</item>
+    </string-array>
 </resources>

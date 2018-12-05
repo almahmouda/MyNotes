@@ -112,7 +112,8 @@ public class DBHandler extends SQLiteOpenHelper {
     List<TrashNoteMdl> getTrash() {
         List<TrashNoteMdl> trashList = new ArrayList<>();
         SQLiteDatabase db = getWritableDatabase();
-        String selectQuery = "SELECT  * FROM " + TrashNoteMdl.TABLE_NAME;
+        String selectQuery = "SELECT  * FROM " + TrashNoteMdl.TABLE_NAME + " ORDER BY " +
+                TrashNoteMdl.COLUMN_NOTE_STAMP_DELETE + " DESC";
 
         Cursor cursor = db.rawQuery(selectQuery, null);
 

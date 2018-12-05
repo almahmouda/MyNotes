@@ -11,6 +11,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -18,10 +20,13 @@ import com.example.admin.mynotes.model.TrashNoteMdl;
 import com.example.admin.mynotes.util.RecyclerTouchListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.TreeMap;
 
-public class TrashListActivity extends AppCompatActivity implements TrashListAdapter.ClickListener {
+
+public class TrashListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener,
+        TrashListAdapter.ClickListener {
 
     private static final int RESTORE = -1;
     private static final int PERMANENT_DELETE = 1;
@@ -35,6 +40,7 @@ public class TrashListActivity extends AppCompatActivity implements TrashListAda
     ActionMode actionMode;
     ActionModeCallback actionModeCallback;
     Spinner spinner;
+    boolean showHideSort = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +74,16 @@ public class TrashListActivity extends AppCompatActivity implements TrashListAda
 
         actionModeCallback = new ActionModeCallback();
 
+        spinner = findViewById(R.id.trash_sort_spinner_bar);
+        spinner.setOnItemSelectedListener(this);
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.sort_label, R.layout.sort_spinner_item);
+
+        adapter.setDropDownViewResource(R.layout.sort_spinner_dropdown);
+
+        spinner.setAdapter(adapter);
+        spinner.setVisibility(View.GONE);
     }
 
     public void viewTrashNote(TrashNoteMdl note, int position) {
@@ -79,7 +95,6 @@ public class TrashListActivity extends AppCompatActivity implements TrashListAda
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == VIEW_CODE && data != null) {
             int position;
             if (resultCode == RESTORE || resultCode == PERMANENT_DELETE) {
@@ -105,6 +120,70 @@ public class TrashListActivity extends AppCompatActivity implements TrashListAda
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+    void displayToast(String i) {
+        Toast.makeText(this, i, Toast.LENGTH_SHORT).show();
+    }
+
+
+    /**
+     * <p>Callback method to be invoked when an item in this view has been
+     * selected. This callback is invoked only when the newly selected
+     * position is different from the previously selected position or if
+     * there was no selected item.</p>
+     * <p>
+     * Implementers can call getItemAtPosition(position) if they need to access the
+     * data associated with the selected item.
+     *
+     * @param parent   The AdapterView where the selection happened
+     * @param view     The view within the AdapterView that was clicked
+     * @param position The position of the view in the adapter
+     * @param id       The row id of the item that is selected
+     */
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        String spinnerLabel = parent.getItemAtPosition(position).toString();
+        displayToast(spinnerLabel);
+        switch (spinnerLabel) {
+            case "Alphabetically":
+                Collections.sort(trashNotes, TrashNoteMdl.Comparators.ALPHA);
+                listAdapter.notifyDataSetChanged();
+//                menuItem.collapseActionView();
+                break;
+            case "Recent Created":
+                Collections.sort(trashNotes, TrashNoteMdl.Comparators.RE_CREATE_DATE);
+                listAdapter.notifyDataSetChanged();
+//                menuItem.collapseActionView();
+                break;
+            case "Recent Deleted":
+                Collections.sort(trashNotes, TrashNoteMdl.Comparators.RE_DELETE_DATE);
+                listAdapter.notifyDataSetChanged();
+//                menuItem.collapseActionView();
+                break;
+        }
+    }
+
+    /**
+     * Callback method to be invoked when the selection disappears from this
+     * view. The selection can disappear for instance when touch is activated
+     * or when the adapter becomes empty.
+     *
+     * @param parent The AdapterView that now contains no selected item.
+     */
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    public void showSort(MenuItem item) {
+
+        if (!showHideSort) {
+            spinner.setVisibility(View.VISIBLE);
+            showHideSort = !showHideSort;
+        } else {
+            spinner.setVisibility(View.GONE);
+            showHideSort = !showHideSort;
         }
     }
 
@@ -150,6 +229,11 @@ public class TrashListActivity extends AppCompatActivity implements TrashListAda
         @Override
         public boolean onCreateActionMode(ActionMode mode, Menu menu) {
             mode.getMenuInflater().inflate(R.menu.menu_trash_list_am, menu);
+
+            if(showHideSort){
+                spinner.setVisibility(View.GONE);
+                showHideSort = !showHideSort;
+            }
 
             return true;
         }
